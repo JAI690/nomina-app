@@ -43,9 +43,10 @@ router.post('/', async(req,res) => {
         lista.push("0");
         lista.push(fechaInicio);
         lista.push(fechaFin);
+        lista.push("0")
         listasuperior.push(lista);
     }
-    await pool.query('INSERT INTO operacion (trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, IMSS, Infonavit, fechaInicio, fechaFin) VALUES ?', [listasuperior]);
+    await pool.query('INSERT INTO operacion (trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, IMSS, Infonavit, fechaInicio, fechaFin, pagado) VALUES ?', [listasuperior]);
     res.redirect('/ejecutivo/')
 });
 
