@@ -19,7 +19,7 @@
                     <div class="col-md-3">
                       <label for="inputAddress"class="form-label" >Del:</label>
                       <div class="input-group">
-                      <input type="date" id="inputFechaInicio">
+                      <input type="date"  id="inputFechaInicio">
                       </div>
                     </div>
 
@@ -106,6 +106,42 @@
 
 
 <script>
+    const segundosAdias = 24*60*60*(1000);
+    let dias = 22;
+    const tiempoTranscurrido = Date.now();
+    const hoy = new Date(tiempoTranscurrido);
+    const dia = hoy.getDate();
+    const mes = hoy.getMonth();
+    const mes2 = hoy.getMonth()+1;
+    const año = hoy.getFullYear().toString();
+
+    const cero = function(fecha){
+        if(fecha<10){
+            return('0'+fecha);
+        }else{
+            return(fecha);
+        }
+    }
+
+    let inicioMin2 = new Date(tiempoTranscurrido-(dias*segundosAdias));
+    let inicioMin = ((inicioMin2.getFullYear().toString()) + '-' + cero(inicioMin2.getMonth()+1) + '-' + cero(inicioMin2.getDate()));
+    let inicioMax2 = new Date(tiempoTranscurrido-(7*segundosAdias));
+    let inicioMax = ((inicioMax2.getFullYear().toString()) + '-' + cero(inicioMax2.getMonth()+1) + '-' + cero(inicioMax2.getDate()));
+
+    let finMin2 = new Date(tiempoTranscurrido-(7*segundosAdias));
+    let finMin = ((finMin2.getFullYear().toString()) + '-' + cero(finMin2.getMonth()+1) + '-' + cero(finMin2.getDate()));
+    let finMax2 = new Date(tiempoTranscurrido);
+    let finMax = ((finMax2.getFullYear().toString()) + '-' + cero(finMax2.getMonth()+1) + '-' + cero(finMax2.getDate()));
+
+    inputFechaIni = document.getElementById("inputFechaInicio");
+    inputFechaIni.setAttribute("min", inicioMin);
+    inputFechaIni.setAttribute("max", inicioMax);
+
+    inputFechaFin = document.getElementById("inputFechaFin");
+    inputFechaFin.setAttribute("min", finMin);
+    inputFechaFin.setAttribute("max", finMax);
+
+
     //Obtener reclutadores unicos
    let empresas= [];
    let empresasID = [];
@@ -170,6 +206,15 @@
         let fecha2 = inputfechafin.value;
         outputfechafin.setAttribute("value",fecha2);
     })
+
+    console.log(hoy);
+    console.log(mes2);
+    console.log(año);
+    console.log(dia);
+    let dosdias = new Date(tiempoTranscurrido-(2*segundosAdias));
+    console.log(dosdias);
+    console.log(segundosAdias);
+
 
 </script>
 
