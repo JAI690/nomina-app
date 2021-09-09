@@ -1,0 +1,114 @@
+<div class="container p-4">
+    <div class ="row">
+        <div class="col-md-5 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form class="row gx-3 gy-2 align-items-center">
+                    <div class="col-md-12">
+                        <div class="d-grid gap-2">
+                            <a href="/imss/add" class="btn btn-success m-4">
+                                 Dar de alta
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                      <label for="inputAddress" class="form-label">Ejecutivo de cuenta:</label>
+                      <div class="input-group">
+                            <select class="form-select" id="ejecutivo">
+                            </select>
+                      </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container p-4">
+    <table class="table table-hover">
+    <thead>
+        <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Empresa</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Banco</th>
+        <th scope="col">Cuenta</th>
+        <th scope="col">Clabe Interbancaria</th>
+        <th scope="col">IMSS</th>
+        <th scope="col">Sueldo Base</th>
+        <th scope="col">Editar</th>
+        <th scope="col">Dar de baja</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each trabajadores}}
+            <tr>
+            <th scope="row">{{id}}</th>
+            <th>{{nombreEmpresa}}</th>
+            <th>{{nombre}}</th>
+            <th><p class="m-2">{{banco}}</p></th>
+            <th><p>{{cuenta}}</p></th>
+            <th><p class="m-2">{{clabe}}</p></th>
+            <th><p>{{IMSS}}</p></th>
+            <th><p>{{sueldoBase}}</p></th>
+            <th><a href="/imss/editar/{{id}}">Editar</a></th>
+            <th><a href="/imss/baja/{{id}}">Baja</a></th>
+            </tr>
+        {{/each}}
+    </tbody>
+    </table>
+
+</div>
+
+
+
+
+<script>
+    //Obtener reclutadores unicos
+   let ejecutivo = [];
+   let ejecutivosID = [];
+
+    {{#each ejecutivos}}
+        ejecutivo.push("{{nombre}}");
+        ejecutivosID.push("{{id}}");
+    {{/each}}
+
+
+
+    const ejecutivos = document.getElementById("ejecutivo");
+    for(i=0; i<ejecutivo.length;i++){
+        let opcion = document.createElement('option');
+        opcion.setAttribute("value", ejecutivosID[i]);
+        let texto = document.createTextNode(ejecutivo[i]);
+        opcion.appendChild(texto);
+        ejecutivos.appendChild(opcion);
+    }
+
+    ejecutivos.addEventListener('change', 
+    function(){
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("empresa");
+        filter = ejecutivos.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        inputEsquema = document.getElementById("esquema");
+        inputEsquema.setAttribute("value","")
+        input.value
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+            } else {
+            tr[i].style.display = "none";
+            }
+        }
+        }
+    });
+
+</script>

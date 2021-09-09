@@ -1,0 +1,76 @@
+<div class="container p-4">
+    <div class ="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form class="row g-3" action="/imss/editar/{{trabajador.id}}", method="POST">
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" placeholder="{{trabajador.nombre}}" value="{{trabajador.nombre}}" name="nombre" required>
+                    </div>
+                     <div class="col-md-2">
+                        <label for="inputEmail4" class="form-label">Empresa</label>
+                        <select name="empresa" class="form-select">
+                            <option selected value="{{trabajador.empresaId}}">{{trabajador.nombreEmpresa}}</option>
+                            {{#each empresas}}
+                                <option value="{{id}}">{{nombreEmpresa}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Ciudad</label>
+                        <input type="text" class="form-control" name="ciudad" placeholder="{{trabajador.ciudad}}" value="{{trabajador.ciudad}}">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Puesto</label>
+                        <input type="text" class="form-control" name="puesto" placeholder="{{trabajador.puesto}}" value="{{trabajador.puesto}}" required>
+                    </div>
+                      <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Horario</label>
+                        <input type="text" class="form-control" name="horario" placeholder="{{trabajador.horario}}" value="{{trabajador.horario}}" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Banco</label>
+                        <input type="text" class="form-control" name="banco" placeholder="{{trabajador.banco}}" value="{{trabajador.banco}}" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Clabe</label>
+                        <input type="text" class="form-control" name="clabe" placeholder="{{trabajador.clabe}}" value="{{trabajador.clabe}}" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Cuenta</label>
+                        <input type="text" class="form-control" name="cuenta" placeholder="{{trabajador.cuenta}}" value="{{trabajador.cuenta}}" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Infonavit</label>
+                        <select name="infonavit" class="form-select">
+                            {{#if (status trabajador.infonavit)}}
+                            <option selected value="1">Sí</option>
+                            <option value="0">No</option>
+                            {{else}}
+                            <option value="1">Sí</option>
+                            <option selected value="0">No</option>
+                            {{/if}}
+                        </select>
+                    </div>       
+
+
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Sueldo Base</label>
+                        <input type="number" step="0.01" class="form-control" name="sueldoBase" placeholder="{{trabajador.sueldoBase}}" value="{{trabajador.sueldoBase}}" required>
+                    </div>
+                        
+                    
+                    <div class="col-12">
+                        <div class="d-grid gap-2">
+                                <button class="btn btn-primary">
+                                    Guardar
+                                </button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

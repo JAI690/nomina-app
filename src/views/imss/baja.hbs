@@ -1,0 +1,32 @@
+<div class="container p-4">
+    <div class ="row">
+        <div class="col-md-4 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form class="row g-3" action="/imss/baja/{{trabajador.id}}", method="POST">
+                    <div class="col-md-12">
+                        <label for="inputEmail4" class="form-label"><h3>¿Quieres dar de baja a</h3></label>
+                        <input type="text" class="form-control" readonly placeholder="{{nombre}}" value="{{trabajador.nombre}}" name="nombre" required>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="d-grid gap-2">
+                                <button class="btn btn-warning">
+                                    Confirmar
+                                </button>
+                        </div>
+                    </div>
+                    
+                    </form>
+                    <hr>
+                    <div class="col-md-12">
+                        <div class="d-grid">     
+                        <button class="btn btn-primary"onclick="window.location.href='/imss'">
+                            No
+                        </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
