@@ -110,10 +110,6 @@
     let dias = 22;
     const tiempoTranscurrido = Date.now();
     const hoy = new Date(tiempoTranscurrido);
-    const dia = hoy.getDate();
-    const mes = hoy.getMonth();
-    const mes2 = hoy.getMonth()+1;
-    const año = hoy.getFullYear().toString();
 
     const cero = function(fecha){
         if(fecha<10){
@@ -206,14 +202,6 @@
         let fecha2 = inputfechafin.value;
         outputfechafin.setAttribute("value",fecha2);
     })
-
-    console.log(hoy);
-    console.log(mes2);
-    console.log(año);
-    console.log(dia);
-    let dosdias = new Date(tiempoTranscurrido-(2*segundosAdias));
-    console.log(dosdias);
-    console.log(segundosAdias);
 
 
 </script>
