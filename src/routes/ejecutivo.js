@@ -27,7 +27,7 @@ router.post('/', async(req,res) => {
     }else{
         totaldias = 15;
     };
-    console.log(totaldias);
+
     for (let index = 0; index < nombre.length; index++) {
         let lista = [];
         

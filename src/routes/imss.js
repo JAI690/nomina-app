@@ -45,7 +45,6 @@ router.post('/editar/:id', async(req,res) => {
 router.get('/baja/:id', async(req,res) => {
     const { id } = req.params;
     const trabajador = await pool.query('SELECT nombre, id FROM trabajador WHERE id = ?', [id]);
-    console.log(trabajador);
     res.render('../views/imss/baja.hbs', {trabajador: trabajador[0]});
 });
 

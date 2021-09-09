@@ -21,6 +21,7 @@
 
 
 <div class="container p-4">
+    <form action="/nomina/pagar" method="POST">
     <table class="table table-hover">
     <thead>
         <tr>
@@ -33,6 +34,7 @@
                 <th scope="col">Clabe Interbancaria</th>
         <th scope="col">Sueldo Neto</th>
         <th scope="col">Total a pagar</th>
+        <th scope="col">Pagado</th>
         </tr>
     </thead>
     <tbody>
@@ -46,10 +48,19 @@
             <th><p class="m-2">{{clabe}}</p></th>
             <th><p>{{sueldoNeto}}</p></th>
             <th><p>{{totalPagar}}</p></th>
+            <th><input type="checkbox" name="estatusPago" value="{{operacionId}}"></th>
             </tr>
         {{/each}}
     </tbody>
     </table>
+                        <div class="col-12">
+                        <div class="d-grid gap-2">
+                                <button class="btn btn-primary">
+                                    Pagar
+                                </button>
+                        </div>
+                    </div>
+    </form>
 </div>
 
 
