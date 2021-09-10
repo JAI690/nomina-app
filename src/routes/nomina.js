@@ -13,9 +13,10 @@ router.get('/', async(req,res) => {
 });
 
 router.post('/pagar', async(req,res) => {
-    const {estatusPago} = req.body;
+    const {estatusPago, fecha} = req.body;
 
-    await pool.query('UPDATE operacion set pagado = 1 WHERE operacionId = ?', [estatusPago]);
+
+    await pool.query('UPDATE operacion set pagado = 1, fechaPago = ? WHERE operacionId = ?', [fecha,estatusPago]);
 
     res.redirect('/nomina');
 

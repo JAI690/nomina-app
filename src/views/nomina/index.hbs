@@ -53,6 +53,7 @@
         {{/each}}
     </tbody>
     </table>
+    <input value="" name="fecha" id="fecha" hidden>
                         <div class="col-12">
                         <div class="d-grid gap-2">
                                 <button class="btn btn-primary">
@@ -66,6 +67,30 @@
 
 <script>
     //Obtener reclutadores unicos
+    const tiempoTranscurrido = Date.now();
+    const hoy = new Date(tiempoTranscurrido);
+
+    let año = hoy.getFullYear().toString();
+    let mes = hoy.getMonth();
+    let dia = hoy.getDate();
+    let hora = hoy.getHours();
+    let minuto = hoy.getMinutes();
+    let segundo = hoy.getSeconds();
+    const cero = function(fecha){
+        if(fecha<10){
+            return('0'+fecha);
+        }else{
+            return(fecha);
+        }
+    }
+
+    let fechita = año + '-' + (cero(mes+1)) + '-' + (cero(dia)) + ' ' + (cero(hora)) + ':' + (cero(minuto)) + ':' + (cero(segundo));
+
+    let fecha = document.getElementById("fecha");
+    fecha.setAttribute("value", fechita);
+
+    
+
    let ejecutivo = [];
    let ejecutivosID = [];
 
@@ -109,6 +134,8 @@
         }
         }
     });
+
+
 
 </script>
 
