@@ -42,7 +42,7 @@
 
 
 <div class="container p-4">
-    <form action="/ejecutivo", class="row g-3" method="POST">
+    <form action="/ejecutivo" class="row g-3" method="POST">
     <table class="table table-hover" id="myTable">
     <thead class="thead-dark">
         <tr>
@@ -90,17 +90,18 @@
 
     </tbody>
     </table>
-         <div class="form-group mb-3">
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-success">
-                                    Guardar
-                                </button>
-                            </div>
-                        </div>
-
             <input type="text" id="esquema" name="esquema" hidden> 
             <input type="date" id="fechaInicio" name="fechaInicio" hidden required>    
-            <input type="date" id="fechaFin" name="fechaFin" hidden required>  
+            <input type="date" id="fechaFin" name="fechaFin" hidden required> 
+            <div class="form-group mb-3">
+                            <div class="d-grid gap-2">
+                                   <button class="btn btn-primary">
+                                    Pagar
+                                </button>
+                            </div>
+            </div>
+
+    
             </form>
 </div>
 
@@ -124,7 +125,7 @@
     let inicioMax2 = new Date(tiempoTranscurrido-(7*segundosAdias));
     let inicioMax = ((inicioMax2.getFullYear().toString()) + '-' + cero(inicioMax2.getMonth()+1) + '-' + cero(inicioMax2.getDate()));
 
-    let finMin2 = new Date(tiempoTranscurrido-(7*segundosAdias));
+    let finMin2 = new Date(tiempoTranscurrido-(12*segundosAdias));
     let finMin = ((finMin2.getFullYear().toString()) + '-' + cero(finMin2.getMonth()+1) + '-' + cero(finMin2.getDate()));
     let finMax2 = new Date(tiempoTranscurrido);
     let finMax = ((finMax2.getFullYear().toString()) + '-' + cero(finMax2.getMonth()+1) + '-' + cero(finMax2.getDate()));
@@ -144,7 +145,7 @@
    let esquemas = [];
 
     {{#each empresas}}
-        empresas.push("{{nombre}}");
+        empresas.push("{{nombreEmpresa}}");
         empresasID.push("{{id}}");
         esquemas.push("{{esquema}}")
     {{/each}}

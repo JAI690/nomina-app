@@ -19,16 +19,37 @@ router.get('/', async(req,res) => {
 
 
 router.post('/', async(req,res) => {
-    const { id, nombre, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin } = req.body;
-
+    const { id, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin } = req.body;
     let listasuperior = [];
     if(esquema==='2'){
         totaldias = 7;
     }else{
         totaldias = 15;
     };
-
-    for (let index = 0; index < nombre.length; index++) {
+    const tiempoTranscurrido = Date.now();
+    const hoy = new Date(tiempoTranscurrido);
+    console.log(id.length);
+    if(id.length===1){
+        let lista = [];
+        
+        let dias = totaldias-faltas;
+        lista.push(id);
+        lista.push("Completa");
+        lista.push(compensacion);
+        lista.push(rebajes);
+        lista.push(sueldoBase);
+        lista.push(dias);
+        lista.push("0");
+        lista.push("0");
+        lista.push("0");
+        lista.push(fechaInicio);
+        lista.push(fechaFin);
+        lista.push("0");
+        lista.push(null);
+        listasuperior.push(lista);
+        console.log("unico elemento")
+    }else{
+    for (let index = 0; index < id.length; index++) {
         let lista = [];
         
         let dias = totaldias-faltas[index];
@@ -46,7 +67,8 @@ router.post('/', async(req,res) => {
         lista.push("0");
         lista.push(null);
         listasuperior.push(lista);
-    }
+    }}
+    console.log(listasuperior);
     await pool.query('INSERT INTO operacion (trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, IMSS, Infonavit, fechaInicio, fechaFin, pagado, fechaPago) VALUES ?', [listasuperior]);
     res.redirect('/ejecutivo/')
 });
