@@ -12,9 +12,9 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                      <label for="inputAddress" class="form-label">Ejecutivo de cuenta:</label>
+                      <label for="inputAddress" class="form-label">empresa de cuenta:</label>
                       <div class="input-group">
-                            <select class="form-select" id="ejecutivo">
+                            <select class="form-select" id="empresa">
                             </select>
                       </div>
                     </div>
@@ -67,30 +67,30 @@
 
 <script>
     //Obtener reclutadores unicos
-   let ejecutivo = [];
-   let ejecutivosID = [];
+   let empresa = [];
+   let empresasID = [];
 
-    {{#each ejecutivos}}
-        ejecutivo.push("{{nombre}}");
-        ejecutivosID.push("{{id}}");
+    {{#each empresas}}
+        empresa.push("{{nombreEmpresa}}");
+        empresasID.push("{{id}}");
     {{/each}}
 
 
 
-    const ejecutivos = document.getElementById("ejecutivo");
-    for(i=0; i<ejecutivo.length;i++){
+    const empresas = document.getElementById("empresa");
+    for(i=0; i<empresa.length;i++){
         let opcion = document.createElement('option');
-        opcion.setAttribute("value", ejecutivosID[i]);
-        let texto = document.createTextNode(ejecutivo[i]);
+        opcion.setAttribute("value", empresasID[i]);
+        let texto = document.createTextNode(empresa[i]);
         opcion.appendChild(texto);
-        ejecutivos.appendChild(opcion);
+        empresas.appendChild(opcion);
     }
 
-    ejecutivos.addEventListener('change', 
+    empresas.addEventListener('change', 
     function(){
         var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById("empresa");
-        filter = ejecutivos.value.toUpperCase();
+        filter = empresas.value.toUpperCase();
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
 

@@ -6,10 +6,10 @@ const router = express.Router();
 const pool = require('../database');
 
 router.get('/', async(req,res) => {
-    const ejecutivos = await pool.query('SELECT * FROM users WHERE rol = "Ejecutivo"');
+    const empresas = await pool.query('SELECT * FROM empresa');
     //const operaciones = await pool.query('SELECT * FROM operacion LEFT JOIN trabajador ON operacion.trabajadorId=trabajador.id JOIN empresa ON trabajador.empresaId = empresa.id');
     const trabajadores = await pool.query('SELECT trabajador.*, empresa.nombreEmpresa FROM trabajador LEFT JOIN empresa ON trabajador.empresaId=empresa.id WHERE estatus = 1');
-    res.render("../views/imss/index.hbs", {ejecutivos, trabajadores});
+    res.render("../views/imss/index.hbs", {empresas, trabajadores});
 });
 
 router.get('/editar/:id', async(req,res) => {
