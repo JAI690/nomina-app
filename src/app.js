@@ -43,6 +43,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use(require('./routes'));
+app.use(require('./routes/autenticacion'));
 app.use('/ejecutivo', require('./routes/ejecutivo'));
 app.use('/nomina', require('./routes/nomina'));
 app.use('/imss', require('./routes/imss'));
