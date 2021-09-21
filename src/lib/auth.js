@@ -17,7 +17,7 @@ module.exports = {
         if(req.user.rol === 'admin'){
             return next();
         }
-        return res.redirect('/leads');
+        return res.redirect('/profile');
     },
 
 

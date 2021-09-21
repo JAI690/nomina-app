@@ -18,15 +18,19 @@ router.post('/signin', isNotLoggedIn, (req,res,next)=>{
 router.get('/profile', isLoggedIn, (req,res) => {
     switch (req.user.rol) {
         case 'Imss':
-            res.redirect('/imss')
+            res.redirect('/imss');
             break;
         case 'Nomina':
-            res.redirect('/nomina')
+            res.redirect('/nomina');
             break;
         case 'Ejecutivo':
-            res.redirect('/ejecutivo')
+            res.redirect('/ejecutivo');
+            break;
+        case 'admin':
+            res.redirect('/imss');
             break;
     } 
+    
 });
 
 router.get('/logout', (req,res) => {
