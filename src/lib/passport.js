@@ -4,7 +4,7 @@ const pool = require('../database');
 const helpers = require('../lib/helpers');
 
 passport.use('local.signin', new LocalStrategy({
-    userNameField: 'username',
+    userNameField: 'user',
     passwordField: 'password',
     passReqToCallback: true
 }, async(req,username,password,done) =>{
@@ -12,7 +12,7 @@ passport.use('local.signin', new LocalStrategy({
     if(rows.length > 0 ){
         const user = rows[0];
         if(password === user.password){
-            done(null, user, req.flash('success', 'Bienvenido ' + user.username));
+            done(null, user, req.flash('success', 'Bienvenido ' + user.nombre));
         }else {
             done(null, false, req.flash('message', 'Contraseña invalida'));
         }

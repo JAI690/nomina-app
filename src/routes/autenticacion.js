@@ -1,34 +1,32 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const {isLoggedIn, isNotLoggedIn} = require('../lib/auth');
+const {isLoggedIn, isNotLoggedIn, isImss, isAdmin} = require('../lib/auth');
 
 router.get('/signin', isNotLoggedIn, (req,res)=>{
     res.render('./auth/signin.hbs');
 });
 
 router.post('/signin', isNotLoggedIn, (req,res,next)=>{
-    var acceso = ''
-    switch (req.user.rol) {
-        case 'nomina':
-            acceso = '/nomina';
-            break;
-        case 'imss':
-            acceso = '/imss';
-            break;
-        case 'Ejecutivo':
-            acceso = '/ejecutivo';
-            break;
-    };
     passport.authenticate('local.signin', {
-        successRedirect: acceso,
+        successRedirect: '/profile',
         failureRedirect: '/signin',
         failureFlash: true
     })(req,res,next);
 });
 
 router.get('/profile', isLoggedIn, (req,res) => {
-    res.render('profile.hbs');
+    switch (req.user.rol) {
+        case 'Imss':
+            res.redirect('/imss')
+            break;
+        case 'Nomina':
+            res.redirect('/nomina')
+            break;
+        case 'Ejecutivo':
+            res.redirect('/ejecutivo')
+            break;
+    } 
 });
 
 router.get('/logout', (req,res) => {

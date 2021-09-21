@@ -18,5 +18,38 @@ module.exports = {
             return next();
         }
         return res.redirect('/leads');
+    },
+
+
+    isNomina(req,res,next) {
+        if(req.user.rol === 'admin'){
+            return next();
+        }else{
+        if(req.user.rol === 'Nomina'){
+            return next();
+        }
+    }
+        return res.redirect('/profile');
+    },
+
+    isImss(req,res,next) {
+        if(req.user.rol === 'admin'){
+            return next();
+        }else{
+        if(req.user.rol === 'Imss'){
+            return next();
+        }}
+        return res.redirect('/profile');
+    },
+
+    isEjecutivo(req,res,next) {
+        if(req.user.rol === 'admin'){
+            return next();
+        }else{
+        if(req.user.rol === 'Ejecutivo'){
+            return next();
+        }
+    }
+        return res.redirect('/profile');
     }
 };
