@@ -1,18 +1,19 @@
 const express = require('express');
-
 const router = express.Router();
+
+const {isLoggedIn, isAdmin, isImss} = require('../lib/auth');
 
 //Conexión a la base de datos
 const pool = require('../database');
 
-router.get('/', async(req,res) => {
+router.get('/', isLoggedIn, isImss, async(req,res) => {
     const empresas = await pool.query('SELECT * FROM empresa');
     //const operaciones = await pool.query('SELECT * FROM operacion LEFT JOIN trabajador ON operacion.trabajadorId=trabajador.id JOIN empresa ON trabajador.empresaId = empresa.id');
     const trabajadores = await pool.query('SELECT trabajador.*, empresa.nombreEmpresa FROM trabajador LEFT JOIN empresa ON trabajador.empresaId=empresa.id WHERE estatus = 1');
     res.render("../views/imss/index.hbs", {empresas, trabajadores});
 });
 
-router.get('/editar/:id', async(req,res) => {
+router.get('/editar/:id',isLoggedIn, isImss, async(req,res) => {
     const { id } = req.params;
     const ejecutivos = await pool.query('SELECT * FROM users WHERE rol = "Ejecutivo";');
     //const operaciones = await pool.query('SELECT * FROM operacion LEFT JOIN trabajador ON operacion.trabajadorId=trabajador.id JOIN empresa ON trabajador.empresaId = empresa.id');
@@ -21,7 +22,7 @@ router.get('/editar/:id', async(req,res) => {
     res.render("../views/imss/editar.hbs", {trabajador: trabajadores[0], empresas});
 });
 
-router.post('/editar/:id', async(req,res) => {
+router.post('/editar/:id',isLoggedIn, isImss, async(req,res) => {
     const { id } = req.params;
     const {empresa, nombre,ciudad,puesto,horario,sueldoBase,banco,clabe,cuenta,infonavit} = req.body;
     const newLink = {

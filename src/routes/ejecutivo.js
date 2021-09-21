@@ -1,6 +1,6 @@
 const express = require('express');
-
 const router = express.Router();
+const {isLoggedIn, isAdmin, isEjecutivo} = require('../lib/auth');
 
 //Conexión a la base de datos
 const pool = require('../database');
@@ -10,7 +10,7 @@ const pool = require('../database');
     //res.render("../views/ejecutivo/index.hbs", {trabajadores});
 //});
 
-router.get('/', async(req,res) => {
+router.get('/',isLoggedIn, isEjecutivo, async(req,res) => {
     
     const empresas = await pool.query('SELECT * FROM empresa WHERE usersId = 1');
     const trabajadores = await pool.query('SELECT * FROM trabajador WHERE usersId = 1 AND estatus = 1');

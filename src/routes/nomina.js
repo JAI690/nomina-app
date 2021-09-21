@@ -1,11 +1,11 @@
 const express = require('express');
-
 const router = express.Router();
+const {isLoggedIn, isAdmin, isNomina} = require('../lib/auth');
 
 //Conexión a la base de datos
 const pool = require('../database');
 
-router.get('/', async(req,res) => {
+router.get('/', isLoggedIn,isNomina, async(req,res) => {
     const empresas = await pool.query('SELECT * FROM empresa');
     const operaciones = await pool.query('SELECT * FROM operacion LEFT JOIN trabajador ON operacion.trabajadorId=trabajador.id JOIN empresa ON trabajador.empresaId = empresa.id WHERE pagado = 0');
 
