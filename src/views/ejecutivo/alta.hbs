@@ -1,0 +1,65 @@
+<div class="container p-4">
+    <div class ="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form class="row g-3" action="/ejecutivo/alta/", method="POST">
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" name="nombre" required>
+                    </div>
+                     <div class="col-md-2">
+                        <label for="inputEmail4" class="form-label">Empresa</label>
+                        <select name="empresa" class="form-select" required>
+                            <option selected disabled>Seleccionar...</option>
+                            {{#each empresa}}
+                                <option value="{{id}}">{{nombreEmpresa}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Ciudad</label>
+                        <input type="text" class="form-control" name="ciudad" >
+                    </div>
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Puesto</label>
+                        <input type="text" class="form-control" name="puesto" required>
+                    </div>
+                      <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Horario</label>
+                        <input type="text" class="form-control" name="horario" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Banco</label>
+                        <input type="text" class="form-control" name="banco" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Clabe</label>
+                        <input type="text" class="form-control" name="clabe" >
+                    </div>
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Cuenta</label>
+                        <input type="text" class="form-control" name="cuenta"  required>
+                    </div>
+                    
+
+
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Sueldo Base</label>
+                        <input type="number" step="0.01" class="form-control" name="sueldoBase" required>
+                    </div>
+                        
+                    
+                    <div class="col-12">
+                        <div class="d-grid gap-2">
+                                <button class="btn btn-primary">
+                                    Guardar
+                                </button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
