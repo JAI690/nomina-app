@@ -80,7 +80,7 @@ router.get('/alta',isLoggedIn, isEjecutivo, async(req,res) => {
 
 
 router.post('/alta', async(req,res) => {
-    const {empresa, nombre,ciudad,puesto,horario,sueldoBase,banco,clabe,cuenta, usersId} = req.body;
+    const {empresa, nombre,ciudad,puesto,horario,sueldoBase,banco,clabe,cuenta} = req.body;
     const iduser = await pool.query('SELECT usersId FROM empresa WHERE id = ?', [empresa]);
     const newLink = {
         empresaId: empresa,
@@ -92,7 +92,8 @@ router.post('/alta', async(req,res) => {
         banco,
         clabe,
         cuenta,
-        usersId: iduser,
+        sueldoIMSS: 0,
+        usersId: iduser[0].usersId,
         estatus: 1
     };
     await pool.query('INSERT INTO trabajador set ?', [newLink]);
