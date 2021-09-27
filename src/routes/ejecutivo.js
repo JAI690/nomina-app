@@ -73,6 +73,32 @@ router.post('/', async(req,res) => {
     res.redirect('/ejecutivo/')
 });
 
+router.get('/alta',isLoggedIn, isEjecutivo, async(req,res) => {
+    const empresa = await pool.query('SELECT id, nombreEmpresa FROM empresa');
+    res.render('../views/ejecutivo/alta.hbs', {empresa});
+});
+
+
+router.post('/alta', async(req,res) => {
+    const {empresa, nombre,ciudad,puesto,horario,sueldoBase,banco,clabe,cuenta, usersId} = req.body;
+    const iduser = await pool.query('SELECT usersId FROM empresa WHERE id = ?', [empresa]);
+    const newLink = {
+        empresaId: empresa,
+        nombre,
+        ciudad,
+        puesto,
+        horario,
+        sueldoBase,
+        banco,
+        clabe,
+        cuenta,
+        usersId: iduser,
+        estatus: 1
+    };
+    await pool.query('INSERT INTO trabajador set ?', [newLink]);
+    res.redirect('/ejecutivo');
+});
+
 
 
 module.exports = router;
