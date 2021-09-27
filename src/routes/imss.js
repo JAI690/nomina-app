@@ -10,7 +10,8 @@ router.get('/', isLoggedIn, isImss, async(req,res) => {
     const empresas = await pool.query('SELECT * FROM empresa');
     //const operaciones = await pool.query('SELECT * FROM operacion LEFT JOIN trabajador ON operacion.trabajadorId=trabajador.id JOIN empresa ON trabajador.empresaId = empresa.id');
     const trabajadores = await pool.query('SELECT trabajador.*, empresa.nombreEmpresa FROM trabajador LEFT JOIN empresa ON trabajador.empresaId=empresa.id WHERE estatus = 1');
-    res.render("../views/imss/index.hbs", {empresas, trabajadores});
+    const pendientes = await pool.query('SELECT * FROM trabajador WHERE sueldoIMSS = 0');
+    res.render("../views/imss/index.hbs", {empresas, trabajadores, pendientes});
 });
 
 router.get('/editar/:id',isLoggedIn, isImss, async(req,res) => {
