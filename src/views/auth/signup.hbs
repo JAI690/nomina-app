@@ -1,0 +1,39 @@
+<div class="p-4 container">
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="card text-center">
+                <div class="card-header">
+                    <h3>SignUp</h3>
+                </div>
+                <div class="card-body">
+                    <form action="/signup" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="fullname" placeholder="Nombre completo" class="form-group mb-3" autofocus>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="username" placeholder="Usuario" class="form-group mb-3">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="password" placeholder="Contraseña" class="form-group mb-3" >
+                        </div>
+                        <div class="form-group">
+                                <select class="form-select mb-3" id="empresa" name="rol">
+                                    <option value="Imms">IMSS</option>
+                                    <option value="Nomina">Nomina</option>
+                                    <option value="Ejecutivo">Ejecutivo</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-success">
+                                Registrar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+
+</div>
