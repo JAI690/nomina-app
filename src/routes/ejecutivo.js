@@ -11,9 +11,8 @@ const pool = require('../database');
 //});
 
 router.get('/',isLoggedIn, isEjecutivo, async(req,res) => {
-    
-    const empresas = await pool.query('SELECT * FROM empresa WHERE usersId = 1');
-    const trabajadores = await pool.query('SELECT * FROM trabajador WHERE usersId = 1 AND estatus = 1');
+    const empresas = await pool.query('SELECT * FROM empresa WHERE usersId = ?', [id]);
+    const trabajadores = await pool.query('SELECT * FROM trabajador WHERE usersId = ? AND estatus = 1',[id]);
     res.render("../views/ejecutivo/index.hbs", {trabajadores, empresas: empresas});
 });
 
