@@ -9,8 +9,8 @@ helpers.encryptPassword = async(password) => {
 };
 
 helpers.matchPassword = async(password, savedPassword) => {
-    await bcrypt.compare(password, savedPassword);
-
+    const validacion = await bcrypt.compare(password, savedPassword);
+    return(validacion);
 };
 
 module.exports = helpers;
