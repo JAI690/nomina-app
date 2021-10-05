@@ -10,7 +10,7 @@ router.get('/', isLoggedIn, isImss, async(req,res) => {
     const empresas = await pool.query('SELECT * FROM empresa');
     //const operaciones = await pool.query('SELECT * FROM operacion LEFT JOIN trabajador ON operacion.trabajadorId=trabajador.id JOIN empresa ON trabajador.empresaId = empresa.id');
     const trabajadores = await pool.query('SELECT trabajador.*, empresa.nombreEmpresa FROM trabajador LEFT JOIN empresa ON trabajador.empresaId=empresa.id WHERE estatus = 1 AND sueldoIMSS != 0');
-    const pendientes = await pool.query('SELECT * FROM trabajador WHERE sueldoIMSS = 0');
+    const pendientes = await pool.query('SELECT * FROM trabajador WHERE sueldoIMSS = 0 AND estatus = 1');
     res.render("../views/imss/index.hbs", {empresas, trabajadores, pendientes});
 });
 
@@ -25,7 +25,7 @@ router.get('/editar/:id',isLoggedIn, isImss, async(req,res) => {
 
 router.post('/editar/:id',isLoggedIn, isImss, async(req,res) => {
     const { id } = req.params;
-    const {empresa, nombre,ciudad,puesto,horario,sueldoBase,banco,clabe,cuenta,infonavit} = req.body;
+    const {empresa, nombre,ciudad,puesto,horario,sueldoBase,banco,clabe,cuenta,infonavit, sueldoIMSS} = req.body;
     const newLink = {
         empresaId: empresa,
         nombre,
@@ -33,6 +33,7 @@ router.post('/editar/:id',isLoggedIn, isImss, async(req,res) => {
         puesto,
         horario,
         sueldoBase,
+        sueldoIMSS,
         banco,
         clabe,
         cuenta,
@@ -52,10 +53,22 @@ router.get('/baja/:id', async(req,res) => {
 
 router.post('/baja/:id', async(req,res) => {
     const {id} = req.params;
+    const {fecha} = req.body;
+    const tiempoTranscurrido = Date.now();
+    const hoy = new Date(tiempoTranscurrido);
+    
     const newLink = {
-        estatus: '0'
+        estatus: '0',
     };
+    const movimiento = {
+        tipo: 'baja',
+        fecha,
+        timestamp: hoy,
+        idtrabajador: id
+    };
+
     await pool.query('UPDATE trabajador set ? WHERE id = ?', [newLink, id]);
+    await pool.query('INSERT INTO movimientos set ?', [movimiento]);
     res.redirect('/imss');
 });
 
