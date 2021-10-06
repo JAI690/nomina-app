@@ -16,4 +16,21 @@ hb.registerHelper('dateFormat', function (date, options) {
       return moment(date).format(formatToUse);
   });
 
+hb.registerHelper('esquema', function (value) {
+    if(value === '1'){
+        return "Quincena";
+    }else{
+        return "Semana";
+    }
+  });
+
+hb.registerHelper('cotizador', function (value) {
+    if(value === '1'){
+        return "Día";
+    }else{
+        return "Hora";
+    }
+  });
+    
+
 module.exports = helpers;
