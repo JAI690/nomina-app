@@ -5,7 +5,7 @@ const {isLoggedIn, isNotLoggedIn, isImss, isAdmin} = require('../lib/auth');
 
 
 
-router.get('/signup', isNotLoggedIn, (req,res)=>{
+router.get('/signup', (req,res)=>{
     res.render('./auth/signup.hbs');
 });
 
