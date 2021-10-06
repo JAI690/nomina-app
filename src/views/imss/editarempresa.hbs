@@ -1,0 +1,49 @@
+<div class="container p-4">
+    <div class ="row">
+        <div class="col-md-4 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form class="row g-3" action="/imss/addempresa/", method="POST">
+                    <div class="col-md-12">
+                        <label for="inputEmail4" class="form-label">Empresa</label>
+                        <input type="text" value="{{empresa.nombreEmpresa}}" class="form-control" name="empresa" required>
+                    </div>
+                    <div class="col-md-12">
+                       <label for="inputEmail4" class="form-label">Ejecutivo</label>
+                       <select name="ejecutivo" class="form-select" required>
+                            <option selected disabled>{{empresa.usersId}}</option>
+                            {{#each ejecutivo}}
+                                <option value="{{id}}">{{nombre}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="inputEmail4" class="form-label">Paga por:</label>
+                        <select name="esquema" class="form-select" required>
+                            <option selected disabled>{{esquema empresa.esquema}}</option>
+                            <option value="1">Quincena</option>
+                            <option value="2">Semana</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="inputEmail4" class="form-label">Cotiza por:</label>
+                        <select name="cotizador" class="form-select" required>
+                            <option selected disabled>{{cotizador empresa.cotizador}}</option>
+                            <option value="1">Día</option>
+                            <option value="2">Hora</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-12">
+                        <div class="d-grid gap-2">
+                                <button class="btn btn-primary">
+                                    Guardar
+                                </button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
