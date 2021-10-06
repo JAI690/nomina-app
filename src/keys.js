@@ -1,8 +1,8 @@
 module.exports = {
     database: {
-        host: 'bcxtepbozizufsxvlmi3-mysql.services.clever-cloud.com',
-        user: 'udpcbjob45kq39fv',
-        password: 'q36GMHb5Dy0DJZn5kWMl',
-        database: 'bcxtepbozizufsxvlmi3',
+        host: 'prueba.c5zebl2v58ut.us-east-2.rds.amazonaws.com',
+        user: 'adminsql',
+        password: 'Xy224xRwfz32',
+        database: 'nomina',
     }
 };

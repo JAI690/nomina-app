@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
 const { promisify } = require('util');
 
@@ -17,9 +17,11 @@ pool.getConnection((err, connection) => {
         if(err.code === "ECONNREFUSED"){
             console.error("DATABASE CONNECTION WAS REFUSED");
         }
+        console.error(err.code)
     }
-    if(connection) connection.release();
+    if(connection){ connection.release();
     console.log("DB is Connected");
+    }
     return;
 
 });
