@@ -40,7 +40,7 @@ router.post('/', async(req,res) => {
         lista.push(sueldoBase);
         lista.push(dias);
         lista.push("0");
-        lista.push("0");
+        lista.push(sueldoIMSS);
         lista.push("0");
         lista.push(fechaInicio);
         lista.push(fechaFin);
