@@ -12,16 +12,15 @@ const pool = require('../database');
 
 router.get('/',isLoggedIn, isEjecutivo, async(req,res) => {
     const id = req.user.id
-    const empresas = await pool.query('SELECT * FROM empresa WHERE usersId = ?', [id]);
-    const trabajadores = await pool.query('SELECT * FROM trabajador WHERE usersId = ? AND estatus = 1',[id]);
-    console.log(empresas);
-    console.log(trabajadores);
+    const empresas = await pool.query('SELECT * FROM empresa', [id]);
+    const trabajadores = await pool.query('SELECT * FROM trabajador WHERE estatus = 1',[id]);
+    
     res.render("../views/ejecutivo/index.hbs", {trabajadores, empresas: empresas});
 });
-
+//WHERE usersId = ?
 
 router.post('/', async(req,res) => {
-    const { IMSS,id, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin} = req.body;
+    const { IMSS,id, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin, subsidio, IMSSaportacion, fonacot, infonavit, ISR} = req.body;
 
     let listasuperior = [];
     if(esquema==='Semana'){
@@ -29,9 +28,15 @@ router.post('/', async(req,res) => {
     }else{
         totaldias = 15;
     };
+    
+    //if(cotizador==='Dia'){
+      //  totaldias = 7;
+    //}else{
+      //  totaldias = 15;
+    //};
     const tiempoTranscurrido = Date.now();
     const hoy = new Date(tiempoTranscurrido);
-    console.log(id.length);
+
     if(id.length===1){
         let lista = [];
         
@@ -42,16 +47,18 @@ router.post('/', async(req,res) => {
         lista.push(rebajes);
         lista.push(sueldoBase);
         lista.push(dias);
-        lista.push("0");
+        lista.push(ISR);
         lista.push(IMSS);
-        console.log(IMSS);
-        lista.push("0");
+        lista.push(infonavit);
         lista.push(fechaInicio);
         lista.push(fechaFin);
         lista.push("0");
         lista.push(null);
+        lista.push(subsidio);
+        lista.push(fonacot);
+        lista.push(IMSSaportacion);
         listasuperior.push(lista);
-        console.log("unico elemento")
+
     }else{
     for (let index = 0; index < id.length; index++) {
         let lista = [];
@@ -63,18 +70,21 @@ router.post('/', async(req,res) => {
         lista.push(rebajes[index]);
         lista.push(sueldoBase[index]);
         lista.push(dias);
-        lista.push("0");
+        lista.push(ISR[index]);
         lista.push(IMSS[index]);
-        console.log(IMSS);
-        lista.push("0");
+        lista.push(infonavit[index]);
         lista.push(fechaInicio);
         lista.push(fechaFin);
         lista.push("0");
         lista.push(null);
+        lista.push(subsidio[index]);
+        lista.push(fonacot[index]);
+        lista.push(IMSSaportacion[index]);
+        
         listasuperior.push(lista);
     }}
-    console.log(listasuperior);
-    await pool.query('INSERT INTO operacion (trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, sueldoBaseIMSS, Infonavit, fechaInicio, fechaFin, pagado, fechaPago) VALUES ?', [listasuperior]);
+
+    await pool.query('INSERT INTO operacion (trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, sueldoBaseIMSS, Infonavit, fechaInicio, fechaFin, pagado, fechaPago, subsidio, fonacot, IMSS) VALUES ?', [listasuperior]);
     res.redirect('/ejecutivo/')
 });
 
