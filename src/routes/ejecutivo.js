@@ -20,9 +20,10 @@ router.get('/',isLoggedIn, isEjecutivo, async(req,res) => {
 
 
 router.post('/', async(req,res) => {
-    const { imss, nuevo,id, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin} = req.body;
+    const { imss, nuevo,id, a, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin} = req.body;
     console.log(imss);
     console.log(nuevo);
+    console.log(a);
     console.log(id);
     let listasuperior = [];
     if(esquema==='2'){
