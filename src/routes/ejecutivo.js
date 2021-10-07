@@ -20,7 +20,7 @@ router.get('/',isLoggedIn, isEjecutivo, async(req,res) => {
 
 
 router.post('/', async(req,res) => {
-    const { IMSS, id, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin} = req.body;
+    const { imss, id, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin} = req.body;
     console.log(IMSS);
     console.log(id);
     let listasuperior = [];
