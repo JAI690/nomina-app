@@ -8,7 +8,19 @@
                         <label for="inputEmail4" class="form-label">Nombre</label>
                         <input type="text" class="form-control" placeholder="{{trabajador.nombre}}" value="{{trabajador.nombre}}" name="nombre" required>
                     </div>
-                     <div class="col-md-2">
+                    <div class="col-md-2">
+                        <label for="inputEmail4" class="form-label">NSS</label>
+                        <input type="text" class="form-control" placeholder="{{trabajador.NSS}}" value="{{trabajador.NSS}}" name="NSS" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="inputEmail4" class="form-label">CURP</label>
+                        <input type="text" class="form-control" placeholder="{{trabajador.CURP}}" value="{{trabajador.CURP}}" name="CURP" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="inputEmail4" class="form-label">RFC</label>
+                        <input type="text" class="form-control" placeholder="{{trabajador.RFC}}" value="{{trabajador.RFC}}" name="RFC" required>
+                    </div>
+                     <div class="col-md-3">
                         <label for="inputEmail4" class="form-label">Empresa</label>
                         <select name="empresa" class="form-select">
                             <option selected value="{{trabajador.empresaId}}">{{trabajador.nombreEmpresa}}</option>
@@ -69,6 +81,24 @@
                     <div class="col-md-3">
                         <label for="inputAddress" class="form-label">Rebaje Infonavit</label>
                         <input type="number" step="0.01" placeholder="{{trabajador.rebajeInfonavit}}" value="{{trabajador.rebajeInfonavit}}" class="form-control" name="rebajeInfonavit" required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Fonacot</label>
+                        <select name="fonacot" class="form-select">
+                            {{#if (status trabajador.fonacot)}}
+                            <option selected value="1">Sí</option>
+                            <option value="0">No</option>
+                            {{else}}
+                            <option value="1">Sí</option>
+                            <option selected value="0">No</option>
+                            {{/if}}
+                        </select>
+                    </div>    
+
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Rebaje fonacot</label>
+                        <input type="number" step="0.01" placeholder="{{trabajador.rebajeFonacot}}" value="{{trabajador.rebajeFonacot}}" class="form-control" name="rebajeFonacot" required>
                     </div>
                         
                     
