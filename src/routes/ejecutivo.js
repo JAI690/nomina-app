@@ -20,8 +20,8 @@ router.get('/',isLoggedIn, isEjecutivo, async(req,res) => {
 
 
 router.post('/', async(req,res) => {
-    const { id, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin, sueldoIMSS} = req.body;
-    console.log(sueldoIMSS);
+    const { id, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin, IMSS} = req.body;
+    console.log(IMSS);
     let listasuperior = [];
     if(esquema==='2'){
         totaldias = 7;
