@@ -24,7 +24,7 @@ router.post('/', async(req,res) => {
     const { IMSS,id, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin} = req.body;
 
     let listasuperior = [];
-    if(esquema==='2'){
+    if(esquema==='Semana'){
         totaldias = 7;
     }else{
         totaldias = 15;
