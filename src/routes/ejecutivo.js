@@ -21,7 +21,7 @@ router.get('/',isLoggedIn, isEjecutivo, async(req,res) => {
 
 router.post('/', async(req,res) => {
     const { imss, id, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin} = req.body;
-    console.log(IMSS);
+    console.log(imss);
     console.log(id);
     let listasuperior = [];
     if(esquema==='2'){
