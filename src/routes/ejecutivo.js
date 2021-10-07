@@ -42,7 +42,8 @@ router.post('/', async(req,res) => {
         lista.push(sueldoBase);
         lista.push(dias);
         lista.push("0");
-        lista.push(sueldoIMSS);
+        lista.push(IMSS);
+        console.log(IMSS);
         lista.push("0");
         lista.push(fechaInicio);
         lista.push(fechaFin);
@@ -62,7 +63,8 @@ router.post('/', async(req,res) => {
         lista.push(sueldoBase[index]);
         lista.push(dias);
         lista.push("0");
-        lista.push(sueldoIMSS[index]);
+        lista.push(IMSS[index]);
+        console.log(IMSS);
         lista.push("0");
         lista.push(fechaInicio);
         lista.push(fechaFin);
