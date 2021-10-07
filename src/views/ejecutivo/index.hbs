@@ -73,7 +73,7 @@
                 <td scope="row" hidden>
                     {{empresaId}}
                 </td>
-                <td scope="row" hidden>
+                <td scope="row">
                     <input type="number" name="sueldoIMSS" value="{{sueldoIMSS}}">
                 </td>
                  <td scope="row">
@@ -122,7 +122,6 @@
     let dias = 22;
     const tiempoTranscurrido = Date.now();
     const hoy = new Date(tiempoTranscurrido);
-
     const cero = function(fecha){
         if(fecha<10){
             return('0'+fecha);
