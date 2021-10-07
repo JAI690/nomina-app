@@ -19,7 +19,7 @@ router.get('/',isLoggedIn, isEjecutivo, async(req,res) => {
 
 
 router.post('/', async(req,res) => {
-    const { id, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin } = req.body;
+    const { id, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin, sueldoIMSS} = req.body;
     let listasuperior = [];
     if(esquema==='2'){
         totaldias = 7;
@@ -60,7 +60,7 @@ router.post('/', async(req,res) => {
         lista.push(sueldoBase[index]);
         lista.push(dias);
         lista.push("0");
-        lista.push("0");
+        lista.push(sueldoIMSS[index]);
         lista.push("0");
         lista.push(fechaInicio);
         lista.push(fechaFin);
@@ -69,7 +69,7 @@ router.post('/', async(req,res) => {
         listasuperior.push(lista);
     }}
     console.log(listasuperior);
-    await pool.query('INSERT INTO operacion (trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, sueldoIMSS, Infonavit, fechaInicio, fechaFin, pagado, fechaPago) VALUES ?', [listasuperior]);
+    await pool.query('INSERT INTO operacion (trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, sueldoBaseIMSS, Infonavit, fechaInicio, fechaFin, pagado, fechaPago) VALUES ?', [listasuperior]);
     res.redirect('/ejecutivo/')
 });
 
