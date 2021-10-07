@@ -79,7 +79,7 @@ router.get('/addempleado/', async(req,res) => {
 });
 
 router.post('/addempleado/', async(req,res) => {
-    const {empresa, nombre,ciudad,puesto,horario,sueldoBase,banco,clabe,cuenta,infonavit, sueldoIMSS} = req.body;
+    const {empresa, nombre,ciudad,puesto,horario,sueldoBase,banco,clabe,cuenta,infonavit, sueldoIMSS, rebajeInfonavit} = req.body;
     const iduser = await pool.query('SELECT usersId FROM empresa WHERE id = ?', [empresa]);
     const newLink = {
         empresaId: empresa,
@@ -92,6 +92,7 @@ router.post('/addempleado/', async(req,res) => {
         clabe,
         cuenta,
         infonavit,
+        rebajeInfonavit,
         sueldoIMSS,
         usersId: iduser[0].usersId,
         estatus: 1
