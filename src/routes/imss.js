@@ -113,7 +113,7 @@ router.post('/addempleado/', async(req,res) => {
 
 
 router.get('/addempresa/', async(req,res) => {
-    const empresa = await pool.query('SELECT id, nombreEmpresa FROM empresa');
+    const empresa = await pool.query('SELECT empresa.id, empresa.nombreEmpresa, users.nombre FROM empresa LEFT JOIN users ON users.id = empresa.usersId');
     const ejecutivo = await pool.query('SELECT id, nombre FROM users WHERE rol = "Ejecutivo"')
     res.render('../views/imss/addempresa.hbs', {empresa, ejecutivo});
 });
@@ -131,9 +131,24 @@ router.post('/addempresa/', async(req,res) => {
 
 router.get('/editarempresa/:id', async(req,res) => {
     const { id } = req.params;
-    const empresa = await pool.query('SELECT * FROM empresa WHERE id = ?', [id]);
+    const empresa = await pool.query('SELECT empresa.*, users.nombre, users.id FROM empresa LEFT JOIN users ON users.id = empresa.usersId WHERE empresa.id = ?', [id]);
     const ejecutivo = await pool.query('SELECT id, nombre FROM users ')
-    res.render('../views/imss/editarempresa.hbs', {empresa: empresa[0], ejecutivo});
+    const id2 = id;
+    res.render('../views/imss/editarempresa.hbs', {empresa: empresa[0], ejecutivo, id2});
 });
+
+router.post('/editarempresa/:id', async(req,res) => {
+    const { id } = req.params;
+    const {empresa, ejecutivo, esquema, cotizador } = req.body;
+    const newLink = {
+        nombreEmpresa: empresa,
+        usersId: ejecutivo,
+        esquema,
+        cotizador
+    };
+    await pool.query('UPDATE empresa set ? WHERE id = ?', [newLink, id]);
+    res.redirect('/imss/addempresa');
+
+})
 
 module.exports = router;
