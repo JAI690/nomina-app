@@ -77,6 +77,33 @@ router.post('/baja/:id', async(req,res) => {
     res.redirect('/imss');
 });
 
+router.get('/alta/:id', async(req,res) => {
+    const { id } = req.params;
+    const trabajador = await pool.query('SELECT nombre, id FROM trabajador WHERE id = ?', [id]);
+    res.render('../views/imss/alta.hbs', {trabajador: trabajador[0]});
+});
+
+router.post('/alta/:id', async(req,res) => {
+    const {id} = req.params;
+    const {fecha} = req.body;
+    const tiempoTranscurrido = Date.now();
+    const hoy = new Date(tiempoTranscurrido);
+    
+    const newLink = {
+        estatus: '1',
+    };
+    const movimiento = {
+        tipo: 'alta',
+        fecha,
+        timestamp: hoy,
+        idtrabajador: id
+    };
+
+    await pool.query('UPDATE trabajador set ? WHERE id = ?', [newLink, id]);
+    await pool.query('INSERT INTO movimientos set ?', [movimiento]);
+    res.redirect('/imss');
+});
+
 
 router.get('/addempleado/', async(req,res) => {
     const empresa = await pool.query('SELECT id, nombreEmpresa FROM empresa');
@@ -148,7 +175,8 @@ router.post('/editarempresa/:id', async(req,res) => {
     };
     await pool.query('UPDATE empresa set ? WHERE id = ?', [newLink, id]);
     res.redirect('/imss/addempresa');
-
 })
+
+
 
 module.exports = router;
