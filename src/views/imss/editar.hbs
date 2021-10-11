@@ -20,6 +20,19 @@
                         <label for="inputEmail4" class="form-label">RFC</label>
                         <input type="text" class="form-control" placeholder="{{trabajador.RFC}}" value="{{trabajador.RFC}}" name="RFC" required>
                     </div>
+                     <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" placeholder="{{trabajador.direccion}}" value="{{trabajador.direccion}}" name="direccion" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">Patrón</label>
+                        <select name="patron" class="form-select" required>
+                            <option value="{{trabajador.patronId}}" selected disabled>{{trabajador.patron}}</option>
+                            {{#each patrones}}
+                                <option value="{{id}}">{{patron}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
                      <div class="col-md-3">
                         <label for="inputEmail4" class="form-label">Empresa</label>
                         <select name="empresa" class="form-select">

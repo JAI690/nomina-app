@@ -14,6 +14,7 @@ router.get('/',isLoggedIn, isEjecutivo, async(req,res) => {
     const id = req.user.id
     const empresas = await pool.query('SELECT * FROM empresa WHERE usersId = ?', [id]);
     const trabajadores = await pool.query('SELECT * FROM trabajador WHERE usersId = ? AND estatus = 1',[id]);
+    
     if(empresas.nombreEmpresa == 'HEB'){
         res.render("../views/ejecutivo/heb.hbs", {trabajadores, empresas: empresas});
     };
@@ -24,7 +25,8 @@ router.get('/heb',isLoggedIn, isEjecutivo, async(req,res) => {
     const id = req.user.id
     const empresas = await pool.query('SELECT * FROM empresa WHERE usersId = ?', [id]);
     const trabajadores = await pool.query('SELECT * FROM trabajador WHERE usersId = ? AND estatus = 1',[id]);
-        res.render("../views/ejecutivo/heb.hbs", {trabajadores, empresas: empresas});
+
+    res.render("../views/ejecutivo/heb.hbs", {trabajadores, empresas: empresas});
 });
 //WHERE usersId = ?
 
@@ -168,16 +170,18 @@ router.post('/heb', async(req,res) => {
 
 router.get('/alta',isLoggedIn, isEjecutivo, async(req,res) => {
     const empresa = await pool.query('SELECT id, nombreEmpresa FROM empresa');
-    res.render('../views/ejecutivo/alta.hbs', {empresa});
+    const patrones = await pool.query('SELECT * FROM patrones');
+    res.render('../views/ejecutivo/alta.hbs', {empresa, patrones});
 });
 
 
 router.post('/alta', async(req,res) => {
-    const {empresa, nombre,ciudad,puesto,horario,sueldoBase,banco,clabe,cuenta} = req.body;
+    const {empresa, nombre,ciudad,puesto,horario,sueldoBase,banco,clabe,cuenta, patron, direccion, sueldoIMSS} = req.body;
     const iduser = await pool.query('SELECT usersId FROM empresa WHERE id = ?', [empresa]);
     const newLink = {
         empresaId: empresa,
         nombre,
+        patronId: patron,
         ciudad,
         puesto,
         horario,
@@ -185,7 +189,8 @@ router.post('/alta', async(req,res) => {
         banco,
         clabe,
         cuenta,
-        sueldoIMSS: 0,
+        sueldoIMSS,
+        direccion,
         usersId: iduser[0].usersId,
         estatus: 1
     };
