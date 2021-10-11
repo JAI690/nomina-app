@@ -112,7 +112,7 @@ router.get('/addempleado/', async(req,res) => {
 });
 
 router.post('/addempleado/', async(req,res) => {
-    const {empresa, nombre,ciudad,direccion,puesto,horario,sueldoBase,banco,clabe,cuenta,infonavit, sueldoIMSS, rebajeInfonavit, fonacot, rebajeFonacot, NSS, CURP, RFC, patron} = req.body;
+    const {empresa, nombre,ciudad,direccion,puesto,horario,sueldoBase,banco,clabe,cuenta,infonavit, sueldoIMSS, rebajeInfonavit, fonacot, rebajeFonacot, NSS, CURP, RFC, patron, fechaIngreso} = req.body;
     const iduser = await pool.query('SELECT usersId FROM empresa WHERE id = ?', [empresa]);
     const newLink = {
         empresaId: empresa,
@@ -135,7 +135,8 @@ router.post('/addempleado/', async(req,res) => {
         rebajeFonacot,
         estatus: 1,
         direccion,
-        patronId: patron
+        patronId: patron,
+        fechaIngreso
     };
     await pool.query('INSERT INTO trabajador set ?', [newLink]);
     res.redirect('/imss');
