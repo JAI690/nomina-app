@@ -39,6 +39,9 @@ router.get('/profile', isLoggedIn, (req,res) => {
         case 'Ejecutivo':
             res.redirect('/ejecutivo');
             break;
+        case 'Administrativo':
+            res.redirect('/administrativo');
+            break;
         case 'admin':
             res.redirect('/imss');
             break;

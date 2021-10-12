@@ -51,5 +51,17 @@ module.exports = {
         }
     }
         return res.redirect('/profile');
+    },
+
+    isAdministrativo(req,res,next) {
+        if(req.user.rol === 'admin'){
+            return next();
+        }else{
+        if(req.user.rol === 'Administrativo'){
+            return next();
+        }
     }
+        return res.redirect('/profile');
+    }
+
 };
