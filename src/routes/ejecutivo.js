@@ -48,6 +48,10 @@ router.post('/', async(req,res) => {
     const tiempoTranscurrido = Date.now();
     const hoy = new Date(tiempoTranscurrido);
 
+    const sueldo = function(dias,salarioreal){
+        return(dias*salarioreal);
+    }
+
     if(id.length===1){
         let lista = [];
         
@@ -68,6 +72,8 @@ router.post('/', async(req,res) => {
         lista.push(subsidio);
         lista.push(fonacot);
         lista.push(IMSSaportacion);
+        lista.push(sueldo(personas,sueldoBase));
+        
         listasuperior.push(lista);
 
     }else{
@@ -91,11 +97,12 @@ router.post('/', async(req,res) => {
         lista.push(subsidio[index]);
         lista.push(fonacot[index]);
         lista.push(IMSSaportacion[index]);
+        lista.push(sueldo(personas[index],sueldoBase[index]));
         
         listasuperior.push(lista);
     }}
 
-    await pool.query('INSERT INTO operacion (trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, sueldoBaseIMSS, Infonavit, fechaInicio, fechaFin, pagado, fechaPago, subsidio, fonacot, IMSS) VALUES ?', [listasuperior]);
+    await pool.query('INSERT INTO operacion (trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, sueldoBaseIMSS, Infonavit, fechaInicio, fechaFin, pagado, fechaPago, subsidio, fonacot, IMSS, sueldoNeto) VALUES ?', [listasuperior]);
     res.redirect('/ejecutivo/')
 });
 
@@ -108,7 +115,9 @@ router.post('/heb', async(req,res) => {
     }else{
         totaldias = 15;
     };
-    
+    const sueldo = function(dias,salarioreal){
+        return(dias*salarioreal);
+    }
     //if(cotizador==='Dia'){
       //  totaldias = 7;
     //}else{
@@ -137,6 +146,7 @@ router.post('/heb', async(req,res) => {
         lista.push(subsidio);
         lista.push(fonacot);
         lista.push(IMSSaportacion);
+        lista.push(sueldo(personas,sueldoBase));
         listasuperior.push(lista);
 
     }else{
@@ -160,11 +170,12 @@ router.post('/heb', async(req,res) => {
         lista.push(subsidio[index]);
         lista.push(fonacot[index]);
         lista.push(IMSSaportacion[index]);
+        lista.push(sueldo(personas[index],sueldoBase[index]));
         
         listasuperior.push(lista);
     }}
 
-    await pool.query('INSERT INTO operacion (trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, sueldoBaseIMSS, Infonavit, fechaInicio, fechaFin, pagado, fechaPago, subsidio, fonacot, IMSS) VALUES ?', [listasuperior]);
+    await pool.query('INSERT INTO operacion (trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, sueldoBaseIMSS, Infonavit, fechaInicio, fechaFin, pagado, fechaPago, subsidio, fonacot, IMSS, sueldoNeto) VALUES ?', [listasuperior]);
     res.redirect('/ejecutivo/')
 });
 
