@@ -4,20 +4,29 @@
             <div class="card">
                 <div class="card-body">
                     <form class="row gx-3 gy-2 align-items-center">
-                    <div class="col-md-12">
-                        <div class="d-grid gap-2">
-                            <a href="/imss/add" class="btn btn-success m-4">
-                                 Dar de alta
-                            </a>
+
+                        <div class="col-md-6">
+                            <div class="d-grid gap-2">
+                                <a href="/imss/addempleado" class="btn btn-success m-4">
+                                    Dar de alta empleado
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-12">
-                      <label for="inputAddress" class="form-label">Empresa:</label>
-                      <div class="input-group">
-                            <select class="form-select" id="empresa">
-                            </select>
-                      </div>
-                    </div>
+
+                        <div class="col-md-6">
+                            <div class="d-grid gap-2">
+                                <a href="/imss/addempresa" class="btn btn-success m-4">
+                                    Dar de alta empresa
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="inputAddress" class="form-label">Empresa:</label>
+                            <div class="input-group">
+                                    <select class="form-select" id="empresa"></select>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -27,7 +36,7 @@
 
 
 <div class="container p-4">
-    <table class="table table-hover">
+    <table class="table table-hover" >
     <thead>
         <tr>
         <th scope="col">ID</th>
@@ -66,7 +75,7 @@
 <hr>
 
 <div class="container p-4">
-    <table class="table table-hover">
+    <table class="table table-hover" id="myTable">
     <thead>
         <tr>
         <th scope="col">ID</th>
@@ -84,16 +93,16 @@
     <tbody>
         {{#each trabajadores}}
             <tr>
-            <th scope="row">{{id}}</th>
-            <th>{{nombreEmpresa}}</th>
-            <th>{{nombre}}</th>
-            <th><p class="m-2">{{banco}}</p></th>
-            <th><p>{{cuenta}}</p></th>
-            <th><p class="m-2">{{clabe}}</p></th>
-            <th><p>{{sueldoIMSS}}</p></th>
-            <th><p>{{sueldoBase}}</p></th>
-            <th><a href="/imss/editar/{{id}}">Editar</a></th>
-            <th><a href="/imss/baja/{{id}}">Baja</a></th>
+            <td scope="row">{{id}}</td>
+            <td>{{nombreEmpresa}}</td>
+            <td>{{nombre}}</td>
+            <td><p class="m-2">{{banco}}</p></td>
+            <td><p>{{cuenta}}</p></td>
+            <td><p class="m-2">{{clabe}}</p></td>
+            <td><p>{{sueldoIMSS}}</p></td>
+            <td><p>{{sueldoBase}}</p></td>
+            <td><a href="/imss/editar/{{id}}">Editar</a></td>
+            <td><a href="/imss/baja/{{id}}">Baja</a></td>
             </tr>
         {{/each}}
     </tbody>
@@ -119,11 +128,12 @@
     const empresas = document.getElementById("empresa");
     for(i=0; i<empresa.length;i++){
         let opcion = document.createElement('option');
-        opcion.setAttribute("value", empresasID[i]);
+        opcion.setAttribute("value", empresa[i]);
         let texto = document.createTextNode(empresa[i]);
         opcion.appendChild(texto);
         empresas.appendChild(opcion);
     }
+    
 
     empresas.addEventListener('change', 
     function(){
@@ -133,12 +143,11 @@
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
 
-        inputEsquema = document.getElementById("esquema");
-        inputEsquema.setAttribute("value","")
-        input.value
+
         // Loop through all table rows, and hide those who don't match the search query
         for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[0];
+        td = tr[i].getElementsByTagName("td")[1];
+        
         if (td) {
             txtValue = td.textContent || td.innerText;
             if (txtValue.toUpperCase().indexOf(filter) > -1) {

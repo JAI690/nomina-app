@@ -1,19 +1,11 @@
 
-
-
 <div class="container p-4">
     <div class ="row">
         <div class="col-md-6 mx-auto">
             <div class="card">
                 <div class="card-body">
                     <form class="row gx-3 gy-2 align-items-center">
-                    <div class="col-md-12">
-                        <div class="d-grid gap-2">
-                            <a href="/ejecutivo/heb" class="btn btn-primary m-4">
-                                 HEB
-                            </a>
-                        </div>
-                    </div>
+                    
                     <div class="col-md-12">
                         <div class="d-grid gap-2">
                             <a href="/ejecutivo/alta" class="btn btn-success m-4">
@@ -21,14 +13,8 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                      <label for="inputAddress" class="form-label">Empresa:</label>
-                      <div class="input-group">
-                            <select class="form-select" id="empresa">
-                            </select>
-                      </div>
-                      
-                    </div>
+                    
+
 
                     <div class="col-md-3">
                       <label for="inputAddress"class="form-label" >Del:</label>
@@ -65,15 +51,17 @@
             <th scope="col">Ciudad</th>
             <th scope="col">Nombre</th>
             <th scope="col">Puesto</th>
-            <th scope="col">Faltas</th>
+            <th scope="col">Personas</th>
+            <th scope="col">Asistencias</th>
             <th scope="col">Compensaciones</th>
             <th scope="col">Rebajes</th>
+            <!--
             <th scope="col">ISR</th>
             <th scope="col">Subsidio</th>
             <th scope="col">Aportacion IMSS</th>
             <th scope="col">Fonacot</th>
             <th scope="col">Infonavit</th>
-
+            -->
 
         </tr>
     </thead>
@@ -99,7 +87,10 @@
                 </td>
                 <td scope="row">{{puesto}}</td>
                 <td>
-                    <input type="number"  width="50" name="faltas" step='1' min='0' max='15' required>
+                    <input type="number"  width="50" name="personas" step='1' min='0' max='15' required>
+                </td>
+                <td>
+                    <input type="number"  width="50" name="asistencias" step='1' min='0' max='15' required>
                 </td>
                 <td>
                     <input type="number" name="compensacion" step='0.01' required>
@@ -107,6 +98,7 @@
                 <td>
                     <input type="number" name="rebajes" step='0.01' required>
                 </td>
+                <!--
                 <td>
                     <input type="number" name="ISR" step='0.01' required>
                 </td>
@@ -122,7 +114,7 @@
                 <td>
                     <input type="number" value="{{rebajeInfonavit}}" placeholder="{{rebajeInfonavit}}"name="infonavit" step='0.01' required>
                 </td>
-
+                -->
             </tr>
         {{/each}}
 
@@ -249,105 +241,3 @@
 
 
 </script>
-
-
-
-<!--
-
-    <div class="container p-4">
-    <form action="/ejecutivo", class="row g-3" method="POST">
-    <table class="table table-hover" id="myTable2">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col">Ciudad</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Puesto</th>
-            <th scope="col">L</th>
-            <th scope="col">M</th>
-            <th scope="col">Mi</th>
-            <th scope="col">J</th>
-            <th scope="col">V</th>
-            <th scope="col">S</th>
-            <th scope="col">D</th>
-            <th scope="col">Compensaciones</th>
-            <th scope="col">Rebajes</th>
-
-
-        </tr>
-    </thead>
-    <tbody>
-
-        {{#each trabajadores}}
-            <tr>
-                <td scope="row" hidden>
-                    {{empresaId}}
-                </td>
-                 <td scope="row">
-                    <input type="hidden" value="{{id}}" name="id" readonly>
-                </td>
-                <td scope="row">
-                    <input type="hidden" value="{{sueldoBase}}" name="sueldoBase" readonly>
-                </td>
-                <td scope="row">{{ciudad}}</td>
-                <td scope="row">
-                    <input type="text" value="{{nombre}}" name="nombre" readonly>
-                </td>
-                <td scope="row">{{puesto}}</td>
-                <td>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="L">
-                    </div>
-                </td>
-                <td>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="M">
-                    </div>
-                </td>
-                <td>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Mi">
-                    </div>
-                </td>
-                <td>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="J">
-                    </div>
-                </td>
-                <td>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="V">
-                    </div>
-                </td>
-                <td>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox6" value="S">
-                    </div>
-                </td>
-                <td>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox7" value="D">
-                    </div>
-                </td>
-                <td>
-                    <input type="number" name="compensacion" step='0.01' required>
-                </td>
-                <td>
-                    <input type="number" name="rebajes" step='0.01' required>
-                </td>
-            </tr>
-        {{/each}}
-
-    </tbody>
-    </table>
-         <div class="form-group mb-3">
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-success">
-                                    Guardar
-                                </button>
-                            </div>
-                        </div>
-            </form>
-</div>
--->

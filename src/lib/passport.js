@@ -21,6 +21,23 @@ passport.use('local.signup', new LocalStrategy({
     return done(null, newUser);
 }));
 
+passport.use('local.pwd', new LocalStrategy({
+    userNameField: 'user',
+    passwordField: 'password',
+    passReqToCallback: true
+}, async(req,username, newPassword, done) =>{
+    const { id } = req.user.id;
+    const newUser = {
+        password: newPassword,
+    };
+    newUser.password = await helpers.encryptPassword(newPassword);
+    const result = await pool.query('UPDATE users SET ? WHERE id = ?', [newUser, id]);
+    //newUser.id = result.insertId;
+    return done(null, newUser,req.flash('success', 'Hola'));
+}));
+
+
+
 passport.use('local.signin', new LocalStrategy({
     userNameField: 'user',
     passwordField: 'password',

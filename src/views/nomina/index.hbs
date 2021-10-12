@@ -22,17 +22,16 @@
 
 <div class="container p-4">
     <form action="/nomina/pagar" method="POST">
-    <table class="table table-hover">
+    <table class="table table-hover" id="myTable">
     <thead>
         <tr>
         <th scope="col">ID</th>
         <th scope="col">Empresa</th>
         <th scope="col">Nombres</th>
-        <th scope="col">Banco</th>
-
+        <th scope="col"onclick="sortTable(3, 'str')">Banco &gt</th>
         <th scope="col">Cuenta</th>
         <th scope="col">Clabe Interbancaria</th>
-        <th scope="col">Sueldo Neto</th>
+        <th scope="col">Sueldo IMSS</th>
         <th scope="col">Total a pagar</th>
         <th scope="col">Del</th>
         <th scope="col">Al</th>
@@ -48,7 +47,7 @@
             <td><p class="m-2">{{banco}}</p></td>
             <td><p>{{cuenta}}</p></td>
             <td><p class="m-2">{{clabe}}</p></td>
-            <td><p>{{sueldoNeto}}</p></td>
+            <td><p>{{IMSSpago}}</p></td>
             <td><p>{{totalPagar}}</p></td>
             <td><p>{{dateFormat fechaInicio}}</p></td>
             <td><p>{{dateFormat fechaFin}}</p></td>
@@ -70,7 +69,7 @@
 
 
 <script>
-    //Obtener reclutadores unicos
+
     const tiempoTranscurrido = Date.now();
     const hoy = new Date(tiempoTranscurrido);
 
@@ -140,12 +139,119 @@
     });
 
 
+    /**
+
+ * Funcion para ordenar una tabla... tiene que recibir el numero de columna a
+
+ * ordenar y el tipo de orden
+
+ * @param int n
+
+ * @param str type - ['str'|'int']
+
+ */
+
+function sortTable(n,type) {
+
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+
+ 
+
+  table = document.getElementById("myTable");
+
+  switching = true;
+
+  //Set the sorting direction to ascending:
+
+  dir = "asc";
+
+ 
+
+  /*Make a loop that will continue until no switching has been done:*/
+
+  while (switching) {
+
+    //start by saying: no switching is done:
+
+    switching = false;
+
+    rows = table.rows;
+
+    /*Loop through all table rows (except the first, which contains table headers):*/
+
+    for (i = 1; i < (rows.length - 1); i++) {
+
+      //start by saying there should be no switching:
+
+      shouldSwitch = false;
+
+      /*Get the two elements you want to compare, one from current row and one from the next:*/
+
+      x = rows[i].getElementsByTagName("TD")[n];
+
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+
+      /*check if the two rows should switch place, based on the direction, asc or desc:*/
+
+      if (dir == "asc") {
+
+        if ((type=="str" && x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) || (type=="int" && parseFloat(x.innerHTML) > parseFloat(y.innerHTML))) {
+
+          //if so, mark as a switch and break the loop:
+
+          shouldSwitch= true;
+
+          break;
+
+        }
+
+      } else if (dir == "desc") {
+
+        if ((type=="str" && x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) || (type=="int" && parseFloat(x.innerHTML) < parseFloat(y.innerHTML))) {
+
+          //if so, mark as a switch and break the loop:
+
+          shouldSwitch = true;
+
+          break;
+
+        }
+
+      }
+
+    }
+
+    if (shouldSwitch) {
+
+      /*If a switch has been marked, make the switch and mark that a switch has been done:*/
+
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+
+      switching = true;
+
+      //Each time a switch is done, increase this count by 1:
+
+      switchcount ++;
+
+    } else {
+
+      /*If no switching has been done AND the direction is "asc", set the direction to "desc" and run the while loop again.*/
+
+      if (switchcount == 0 && dir == "asc") {
+
+        dir = "desc";
+
+        switching = true;
+
+      }
+
+    }
+
+  }
+
+}
+
+
 
 </script>
 
-<!--
-    FILTRAR POR empresa DE CUENTA
-    DESPLEGAR EL NOMBRE DE LA EMPRESA
-    ORDENAR POR CUENTA
-    PONER FECHAS LIMITE
-    ->

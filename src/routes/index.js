@@ -6,4 +6,7 @@ router.get('/', (req,res) => {
     res.render("../views/auth/signin.hbs")
 });
 
+
+
+
 module.exports = router;

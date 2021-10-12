@@ -3,12 +3,39 @@
         <div class="col-md-8 mx-auto">
             <div class="card">
                 <div class="card-body">
-                    <form class="row g-3" action="/imss/add/", method="POST">
+                    <form class="row g-3" action="/imss/addempleado/", method="POST">
                     <div class="col-md-4">
                         <label for="inputEmail4" class="form-label">Nombre</label>
                         <input type="text" class="form-control" name="nombre" required>
                     </div>
-                     <div class="col-md-2">
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">NSS</label>
+                        <input type="text" class="form-control" name="NSS" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">CURP</label>
+                        <input type="text" class="form-control" name="CURP" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">RFC</label>
+                        <input type="text" class="form-control" name="RFC" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" name="direccion" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">Patrón</label>
+                        <select name="patron" class="form-select" required>
+                            <option selected disabled>Seleccionar...</option>
+                            {{#each patrones}}
+                                <option value="{{id}}">{{patron}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+
+
+                     <div class="col-md-3">
                         <label for="inputEmail4" class="form-label">Empresa</label>
                         <select name="empresa" class="form-select" required>
                             <option selected disabled>Seleccionar...</option>
@@ -41,14 +68,6 @@
                         <label for="inputAddress" class="form-label">Cuenta</label>
                         <input type="text" class="form-control" name="cuenta"  required>
                     </div>
-                    <div class="col-md-3">
-                        <label for="inputAddress" class="form-label">Infonavit</label>
-                        <select name="infonavit" class="form-select">
-                            <option selected value="1">Sí</option>
-                            <option value="0">No</option>
-                        </select>
-                    </div>       
-
 
                     <div class="col-md-3">
                         <label for="inputAddress" class="form-label">Sueldo Base</label>
@@ -59,8 +78,39 @@
                         <label for="inputAddress" class="form-label">Sueldo IMSS</label>
                         <input type="number" step="0.01" class="form-control" name="sueldoIMSS" required>
                     </div>
-                        
-                    
+
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Infonavit</label>
+                        <select name="infonavit" class="form-select">
+                            <option selected value="1">Sí</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>    
+
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Rebaje Infonavit</label>
+                        <input type="number" step="0.01" class="form-control" name="rebajeInfonavit" required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Fonacot</label>
+                        <select name="fonacot" class="form-select">
+                            <option selected value="1">Sí</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>    
+
+                    <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Rebaje fonacot</label>
+                        <input type="number" step="0.01" class="form-control" name="rebajeFonacot" required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="inputFecha" class="form-label">Fecha de Ingreso</label>
+                        <input type="date" class="form-control" name="fechaIngreso">
+                    </div>
+
+
                     <div class="col-12">
                         <div class="d-grid gap-2">
                                 <button class="btn btn-primary">

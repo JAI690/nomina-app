@@ -55,6 +55,7 @@ app.use(require('./routes/autenticacion'));
 app.use('/ejecutivo', require('./routes/ejecutivo'));
 app.use('/nomina', require('./routes/nomina'));
 app.use('/imss', require('./routes/imss'));
+app.use('/administrativo', require('./routes/administrativo'));
 
 // Public
 app.use(express.static(path.join(__dirname, 'public')));

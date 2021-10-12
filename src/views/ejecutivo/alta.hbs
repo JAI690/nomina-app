@@ -8,7 +8,33 @@
                         <label for="inputEmail4" class="form-label">Nombre</label>
                         <input type="text" class="form-control" name="nombre" required>
                     </div>
-                     <div class="col-md-2">
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">NSS</label>
+                        <input type="text" class="form-control" name="NSS" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">CURP</label>
+                        <input type="text" class="form-control" name="CURP" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">RFC</label>
+                        <input type="text" class="form-control" name="RFC" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" name="direccion" required>
+                    </div>
+                     <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">Patrón</label>
+                        <select name="patron" class="form-select" required>
+                            <option selected disabled>Seleccionar...</option>
+                            {{#each patrones}}
+                                <option value="{{id}}">{{patron}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    
+                     <div class="col-md-3">
                         <label for="inputEmail4" class="form-label">Empresa</label>
                         <select name="empresa" class="form-select" required>
                             <option selected disabled>Seleccionar...</option>
@@ -48,7 +74,15 @@
                         <label for="inputAddress" class="form-label">Sueldo Base</label>
                         <input type="number" step="0.01" class="form-control" name="sueldoBase" required>
                     </div>
-                        
+                      <div class="col-md-3">
+                        <label for="inputAddress" class="form-label">Sueldo IMSS</label>
+                        <input type="number" step="0.01" class="form-control" name="sueldoIMSS" required>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label for="inputFecha" class="form-label">Fecha de Ingreso</label>
+                        <input type="date" class="form-control" name="fechaIngreso">
+                    </div>
                     
                     <div class="col-12">
                         <div class="d-grid gap-2">
