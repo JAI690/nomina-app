@@ -1,6 +1,7 @@
 const helpers = {};
 const hb = require('handlebars');
 const moment = require("moment");
+const accounting = require("accounting");
 
 hb.registerHelper('status', function (value) {
     if(value === '1'){
@@ -31,6 +32,11 @@ hb.registerHelper('cotizador', function (value) {
         return "Hora";
     }
   });
+
+  hb.registerHelper('accountingFormat', function (value) {
+    return accounting.formatMoney(value);
+  });
+    
     
 
 module.exports = helpers;
