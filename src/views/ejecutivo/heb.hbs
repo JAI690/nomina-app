@@ -42,7 +42,7 @@
 
 
 <div class="container p-3">
-    <form action="/ejecutivo" class="row g-3" method="POST">
+    <form action="/ejecutivo/heb" class="row g-3" method="POST">
     <div class="table-responsive">
     <table class="table table-hover " width="500px"id="myTable">
     <thead class="thead-dark">
@@ -87,16 +87,16 @@
                 </td>
                 <td scope="row">{{puesto}}</td>
                 <td>
-                    <input type="number"  width="50" name="personas" step='1' min='0' max='15' required>
+                    <input type="number"  width="50" name="personas" step='1' min='0' max='15' >
                 </td>
                 <td>
-                    <input type="number"  width="50" name="asistencias" step='1' min='0' max='15' required>
+                    <input type="number"  width="50" name="asistencias" step='1' min='0' max='15' >
                 </td>
                 <td>
-                    <input type="number" name="compensacion" step='0.01' required>
+                    <input type="number" name="compensacion" step='0.01' >
                 </td>
                 <td>
-                    <input type="number" name="rebajes" step='0.01' required>
+                    <input type="number" name="rebajes" step='0.01' >
                 </td>
                 <!--
                 <td>
@@ -121,7 +121,7 @@
     </tbody>
     </table>
     </div>
-            <input type="text" id="esquema" name="esquema" hidden> 
+            <input type="text" id="esquema" name="esquema" value="2" hidden> 
             <input type="date" id="fechaInicio" name="fechaInicio" hidden required>    
             <input type="date" id="fechaFin" name="fechaFin" hidden required> 
             <div class="form-group mb-3">
@@ -169,59 +169,6 @@
     inputFechaFin.setAttribute("min", finMin);
     inputFechaFin.setAttribute("max", finMax);
 
-
-
-   let empresas= [];
-   let empresasID = [];
-   let esquemas = [];
-   let cotizador = [];
-
-    {{#each empresas}}
-        empresas.push("{{nombreEmpresa}}");
-        empresasID.push("{{id}}");
-        esquemas.push("{{esquema esquema}}")
-        cotizador.push("{{cotizador cotizador}}")
-    {{/each}}
-
-    console.log(cotizador)
-    console.log(esquemas)
-
-    const empresa = document.getElementById("empresa");
-    for(i=0; i<empresas.length;i++){
-        let opcion = document.createElement('option');
-        opcion.setAttribute("value", i);
-        let texto = document.createTextNode(empresas[i]);
-        opcion.appendChild(texto);
-        empresa.appendChild(opcion);
-    }
-
- empresa.addEventListener('change', 
-  function(){
-    var input, filter, table, tr, td, i, txtValue;
-    input = document.getElementById("empresa");
-    filter = empresasID[input.value].toUpperCase();
-    table = document.getElementById("myTable");
-    tr = table.getElementsByTagName("tr");
-
-    inputEsquema = document.getElementById("esquema");
-    inputEsquema.setAttribute("value","")
-    input.value
-    // Loop through all table rows, and hide those who don't match the search query
-    for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[0];
-      if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
-        }
-      }
-    }
-  });
-
-    const esquema = document.getElementById("esquema");
-    esquema.setAttribute("value",esquemas[empresa.value]);
 
     const inputfechainicio = document.getElementById("inputFechaInicio");
     const inputfechafin = document.getElementById("inputFechaFin");
