@@ -23,7 +23,7 @@ router.get('/',isLoggedIn, isEjecutivo, async(req,res) => {
 
 router.get('/heb',isLoggedIn, isEjecutivo, async(req,res) => {
     const id = req.user.id
-    const empresas = await pool.query('SELECT * FROM empresa WHERE usersId = ?', [id]);
+    const empresas = await pool.query('SELECT * FROM empresa ', [id]);
     const trabajadores = await pool.query('SELECT * FROM trabajador WHERE usersId = ? AND estatus = 1',[id]);
 
     res.render("../views/ejecutivo/heb.hbs", {trabajadores, empresas: empresas});
@@ -107,45 +107,35 @@ router.post('/', async(req,res) => {
 });
 
 router.post('/heb', async(req,res) => {
-    const { IMSS,id, compensacion, asistencias, personas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin, subsidio, IMSSaportacion, fonacot, infonavit, ISR} = req.body;
+    const { IMSS,id, compensacion, asistencias, personas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin} = req.body;
 
-    let listasuperior = [];
-    if(esquema==='Semana'){
-        totaldias = 7;
-    }else{
-        totaldias = 15;
-    };
+
     const sueldo = function(dias,salarioreal){
         return(dias*salarioreal);
     }
-    //if(cotizador==='Dia'){
-      //  totaldias = 7;
-    //}else{
-      //  totaldias = 15;
-    //};
+
     const tiempoTranscurrido = Date.now();
     const hoy = new Date(tiempoTranscurrido);
 
     if(id.length===1){
         let lista = [];
-        
-        let dias = totaldias-faltas;
+
         lista.push(id);
         lista.push("Completa");
         lista.push(compensacion);
         lista.push(rebajes);
         lista.push(sueldoBase);
         lista.push(asistencias);
-        lista.push(ISR);
+        lista.push(0);
         lista.push(IMSS);
-        lista.push(infonavit);
+        lista.push(0);
         lista.push(fechaInicio);
         lista.push(fechaFin);
         lista.push("0");
         lista.push(null);
-        lista.push(subsidio);
-        lista.push(fonacot);
-        lista.push(IMSSaportacion);
+        lista.push(0);
+        lista.push(0);
+        lista.push(0);
         lista.push(sueldo(personas,sueldoBase));
         listasuperior.push(lista);
 
@@ -153,23 +143,22 @@ router.post('/heb', async(req,res) => {
     for (let index = 0; index < id.length; index++) {
         let lista = [];
         
-        let dias = totaldias-faltas[index];
         lista.push(id[index]);
         lista.push("Completa");
         lista.push(compensacion[index]);
         lista.push(rebajes[index]);
         lista.push(sueldoBase[index]);
-        lista.push(dias);
-        lista.push(ISR[index]);
+        lista.push(asistencias[index]);
+        lista.push(0);
         lista.push(IMSS[index]);
-        lista.push(infonavit[index]);
+        lista.push(0);
         lista.push(fechaInicio);
         lista.push(fechaFin);
         lista.push("0");
         lista.push(null);
-        lista.push(subsidio[index]);
-        lista.push(fonacot[index]);
-        lista.push(IMSSaportacion[index]);
+        lista.push(0);
+        lista.push(0);
+        lista.push(0);
         lista.push(sueldo(personas[index],sueldoBase[index]));
         
         listasuperior.push(lista);
