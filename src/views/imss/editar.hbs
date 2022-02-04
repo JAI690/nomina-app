@@ -6,27 +6,27 @@
                     <form class="row g-3" action="/imss/editar/{{trabajador.id}}", method="POST">
                     <div class="col-md-4">
                         <label for="inputEmail4" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" placeholder="{{trabajador.nombre}}" value="{{trabajador.nombre}}" name="nombre" required>
+                        <input type="text" class="form-control" placeholder="{{trabajador.nombre}}" value="{{trabajador.nombre}}" name="nombre" >
                     </div>
                     <div class="col-md-2">
                         <label for="inputEmail4" class="form-label">NSS</label>
-                        <input type="text" class="form-control" placeholder="{{trabajador.NSS}}" value="{{trabajador.NSS}}" name="NSS" required>
+                        <input type="text" class="form-control" placeholder="{{trabajador.NSS}}" value="{{trabajador.NSS}}" name="NSS" >
                     </div>
                     <div class="col-md-3">
                         <label for="inputEmail4" class="form-label">CURP</label>
-                        <input type="text" class="form-control" placeholder="{{trabajador.CURP}}" value="{{trabajador.CURP}}" name="CURP" required>
+                        <input type="text" class="form-control" placeholder="{{trabajador.CURP}}" value="{{trabajador.CURP}}" name="CURP" >
                     </div>
                     <div class="col-md-3">
                         <label for="inputEmail4" class="form-label">RFC</label>
-                        <input type="text" class="form-control" placeholder="{{trabajador.RFC}}" value="{{trabajador.RFC}}" name="RFC" required>
+                        <input type="text" class="form-control" placeholder="{{trabajador.RFC}}" value="{{trabajador.RFC}}" name="RFC" >
                     </div>
                      <div class="col-md-4">
                         <label for="inputEmail4" class="form-label">Dirección</label>
-                        <input type="text" class="form-control" placeholder="{{trabajador.direccion}}" value="{{trabajador.direccion}}" name="direccion" required>
+                        <input type="text" class="form-control" placeholder="{{trabajador.direccion}}" value="{{trabajador.direccion}}" name="direccion" >
                     </div>
                     <div class="col-md-4">
                         <label for="inputEmail4" class="form-label">Patrón</label>
-                        <select name="patron" class="form-select" required>
+                        <select name="patron" class="form-select" >
                             <option value="{{trabajador.patronId}}" selected disabled>{{trabajador.patron}}</option>
                             {{#each patrones}}
                                 <option value="{{id}}">{{patron}}</option>
@@ -48,34 +48,34 @@
                     </div>
                     <div class="col-md-3">
                         <label for="inputAddress" class="form-label">Puesto</label>
-                        <input type="text" class="form-control" name="puesto" placeholder="{{trabajador.puesto}}" value="{{trabajador.puesto}}" required>
+                        <input type="text" class="form-control" name="puesto" placeholder="{{trabajador.puesto}}" value="{{trabajador.puesto}}" >
                     </div>
                       <div class="col-md-3">
                         <label for="inputAddress" class="form-label">Horario</label>
-                        <input type="text" class="form-control" name="horario" placeholder="{{trabajador.horario}}" value="{{trabajador.horario}}" required>
+                        <input type="text" class="form-control" name="horario" placeholder="{{trabajador.horario}}" value="{{trabajador.horario}}" >
                     </div>
                     <div class="col-md-3">
                         <label for="inputAddress" class="form-label">Banco</label>
-                        <input type="text" class="form-control" name="banco" placeholder="{{trabajador.banco}}" value="{{trabajador.banco}}" required>
+                        <input type="text" class="form-control" name="banco" placeholder="{{trabajador.banco}}" value="{{trabajador.banco}}" >
                     </div>
                     <div class="col-md-3">
                         <label for="inputAddress" class="form-label">Clabe</label>
-                        <input type="text" class="form-control" name="clabe" placeholder="{{trabajador.clabe}}" value="{{trabajador.clabe}}" required>
+                        <input type="text" class="form-control" name="clabe" placeholder="{{trabajador.clabe}}" value="{{trabajador.clabe}}" >
                     </div>
                     <div class="col-md-3">
                         <label for="inputAddress" class="form-label">Cuenta</label>
-                        <input type="text" class="form-control" name="cuenta" placeholder="{{trabajador.cuenta}}" value="{{trabajador.cuenta}}" required>
+                        <input type="text" class="form-control" name="cuenta" placeholder="{{trabajador.cuenta}}" value="{{trabajador.cuenta}}" >
                     </div>
                     
 
                     <div class="col-md-3">
                         <label for="inputAddress" class="form-label">Sueldo Base</label>
-                        <input type="number" step="0.01" class="form-control" name="sueldoBase" placeholder="{{trabajador.sueldoBase}}" value="{{trabajador.sueldoBase}}" required>
+                        <input type="number" step="0.01" class="form-control" name="sueldoBase" placeholder="{{trabajador.sueldoBase}}" value="{{trabajador.sueldoBase}}" >
                     </div>
 
                     <div class="col-md-3">
                         <label for="inputAddress" class="form-label">Sueldo IMSS</label>
-                        <input type="number" step="0.01" class="form-control" name="sueldoIMSS" placeholder="{{trabajador.sueldoIMSS}}" value="{{trabajador.sueldoIMSS}}" required>
+                        <input type="number" step="0.01" class="form-control" name="sueldoIMSS" placeholder="{{trabajador.sueldoIMSS}}" value="{{trabajador.sueldoIMSS}}" >
                     </div>
                     
                     <div class="col-md-3">
@@ -93,7 +93,7 @@
 
                     <div class="col-md-3">
                         <label for="inputAddress" class="form-label">Rebaje Infonavit</label>
-                        <input type="number" step="0.01" placeholder="{{trabajador.rebajeInfonavit}}" value="{{trabajador.rebajeInfonavit}}" class="form-control" name="rebajeInfonavit" required>
+                        <input type="number" step="0.01" placeholder="{{trabajador.rebajeInfonavit}}" value="{{trabajador.rebajeInfonavit}}" class="form-control" name="rebajeInfonavit" >
                     </div>
 
                     <div class="col-md-3">
@@ -111,7 +111,7 @@
 
                     <div class="col-md-3">
                         <label for="inputAddress" class="form-label">Rebaje fonacot</label>
-                        <input type="number" step="0.01" placeholder="{{trabajador.rebajeFonacot}}" value="{{trabajador.rebajeFonacot}}" class="form-control" name="rebajeFonacot" required>
+                        <input type="number" step="0.01" placeholder="{{trabajador.rebajeFonacot}}" value="{{trabajador.rebajeFonacot}}" class="form-control" name="rebajeFonacot" >
                     </div>
                     
                     <!-- Boton para dar de alta en el IMSS 
