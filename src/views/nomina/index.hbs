@@ -8,6 +8,7 @@
                       <label for="inputAddress" class="form-label">Empresa:</label>
                       <div class="input-group">
                             <select class="form-select" id="empresa">
+                            <option selected>Seleccionar...</option>
                             </select>
                       </div>
                       
@@ -107,7 +108,7 @@
     const empresas = document.getElementById("empresa");
     for(i=0; i<empresa.length;i++){
         let opcion = document.createElement('option');
-        opcion.setAttribute("value", empresasID[i]);
+        opcion.setAttribute("value", empresa[i]);
         let texto = document.createTextNode(empresa[i]);
         opcion.appendChild(texto);
         empresas.appendChild(opcion);
@@ -121,9 +122,11 @@
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
 
-        inputEsquema = document.getElementById("esquema");
-        inputEsquema.setAttribute("value","")
-        input.value
+        //inputEsquema = document.getElementById("esquema");
+        //inputEsquema.setAttribute("value","")
+        //input.value
+        console.log(input.value)
+        console.log(empresas.value)
         // Loop through all table rows, and hide those who don't match the search query
         for (i = 0; i < tr.length; i++) {
         td = tr[i].getElementsByTagName("td")[1];
