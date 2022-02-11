@@ -80,6 +80,7 @@
         <tr>
         <th scope="col">ID</th>
         <th scope="col">Empresa</th>
+        <th scope="col">Patron</th>
         <th scope="col">Nombre</th>
         <th scope="col">Banco</th>
         <th scope="col">Cuenta</th>
@@ -93,8 +94,9 @@
     <tbody>
         {{#each trabajadores}}
             <tr>
-            <td scope="row">{{id}}</td>
+            <td scope="row">{{idEmpleado}}</td>
             <td>{{nombreEmpresa}}</td>
+            <td>{{patron}}</td>
             <td>{{nombre}}</td>
             <td><p class="m-2">{{banco}}</p></td>
             <td><p>{{cuenta}}</p></td>
