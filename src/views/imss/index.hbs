@@ -27,11 +27,14 @@
                                     <select class="form-select" id="empresa"></select>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12 ">
                             <label for="inputAddress" class="form-label">Patron:</label>
                             <div class="input-group">
                                     <select class="form-select" id="patron"></select>
                             </div>
+                        </div>
+                        <div class="col-md-12 mx-auto mt-4">
+                            <p>Total empleados: <strong id="desplegarTotal"></strong></p>
                         </div>
                     </form>
                 </div>
@@ -122,6 +125,12 @@
 
 
 <script>
+    let total = 0;
+
+    const desplegarTotal = document.getElementById('desplegarTotal');
+    let text = document.createTextNode(total)
+    desplegarTotal.appendChild(text);
+
     //Obtener empresas
    let empresa = [];
    let empresasID = [];
@@ -145,6 +154,7 @@
 
     empresas.addEventListener('change', 
     function(){
+        let totalInterno = 0;
         var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById("empresa");
         filter = empresas.value.toUpperCase();
@@ -159,12 +169,18 @@
         if (td) {
             txtValue = td.textContent || td.innerText;
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = "";
+                tr[i].style.display = "";
+                totalInterno = totalInterno + 1
             } else {
             tr[i].style.display = "none";
             }
         }
         }
+        total = totalInterno;
+        const desplegarTotal = document.getElementById('desplegarTotal');
+        desplegarTotal.removeChild(desplegarTotal.firstChild)
+        let text = document.createTextNode(total)
+        desplegarTotal.appendChild(text);
     });
 
 
@@ -192,6 +208,7 @@
 
     patrones.addEventListener('change', 
     function(){
+        let totalInterno = 0;
         var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById("patron");
         filter = patrones.value.toUpperCase();
@@ -207,11 +224,18 @@
             txtValue = td.textContent || td.innerText;
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
             tr[i].style.display = "";
+            totalInterno = totalInterno + 1
             } else {
             tr[i].style.display = "none";
             }
         }
         }
+        total = totalInterno
+        const desplegarTotal = document.getElementById('desplegarTotal');
+        desplegarTotal.removeChild(desplegarTotal.firstChild)
+        let text = document.createTextNode(total)
+        desplegarTotal.appendChild(text);
     });
+
 
 </script>
