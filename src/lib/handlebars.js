@@ -17,6 +17,11 @@ hb.registerHelper('dateFormat', function (date, options) {
       return moment(date).format(formatToUse);
   });
 
+hb.registerHelper('dateFormat2', function (date, options) {
+  const formatToUse = (arguments[1] && arguments[1].hash && arguments[1].hash.format) || "YYYY-MM-DD"
+  return moment(date).format(formatToUse);
+});
+
 hb.registerHelper('esquema', function (value) {
     if(value === '1'){
         return "Quincena";
@@ -36,7 +41,6 @@ hb.registerHelper('cotizador', function (value) {
   hb.registerHelper('accountingFormat', function (value) {
     return accounting.formatMoney(value);
   });
-    
     
 
 module.exports = helpers;

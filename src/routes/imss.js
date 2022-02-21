@@ -26,7 +26,7 @@ router.get('/editar/:id',isLoggedIn, isImss, async(req,res) => {
 
 router.post('/editar/:id',isLoggedIn, isImss, async(req,res) => {
     const { id } = req.params;
-    const {empresa, nombre,ciudad,puesto,horario,sueldoBase,banco,clabe,cuenta,infonavit, rebajeInfonavit,sueldoIMSS, fonacot, rebajeFonacot,NSS,CURP,RFC, patron, idEmpleado} = req.body;
+    const {empresa, nombre,ciudad,puesto,horario,sueldoBase,banco,clabe,cuenta,infonavit, rebajeInfonavit,sueldoIMSS, fonacot, rebajeFonacot,NSS,CURP,RFC, patron, idEmpleado,fechaIngreso} = req.body;
     const newLink = {
         empresaId: empresa,
         nombre,
@@ -46,9 +46,9 @@ router.post('/editar/:id',isLoggedIn, isImss, async(req,res) => {
         fonacot,
         rebajeFonacot,
         patronId:patron,
-        idEmpleado
+        idEmpleado,
+        fechaIngreso
     };
-    console.log('patron:'+patron)
     await pool.query('UPDATE trabajador set ? WHERE id = ?', [newLink, id]);
     res.redirect('/imss');
 });
