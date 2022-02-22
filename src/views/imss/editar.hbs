@@ -10,7 +10,7 @@
                     </div>
                     <div class="col-md-2">
                         <label for="inputEmail4" class="form-label">ID Empleado</label>
-                        <input type="text" class="form-control" name="idEmpleado" >
+                        <input type="text" class="form-control" name="idEmpleado" value="{{trabajador.idEmpleado}}" placeholder="{{trabajador.idEmpleado}}">
                     </div>
                     <div class="col-md-3">
                         <label for="inputEmail4" class="form-label">NSS</label>
@@ -31,7 +31,7 @@
                     <div class="col-md-4">
                         <label for="inputEmail4" class="form-label">Patrón</label>
                         <select name="patron" class="form-select" >
-                            <option value="{{trabajador.patronId}}" selected disabled>{{trabajador.patron}}</option>
+                            <option value="{{trabajador.patronId}}" selected >{{trabajador.patron}}</option>
                             {{#each patrones}}
                                 <option value="{{idpatrones}}">{{patron}}</option>
                             {{/each}}

@@ -28,6 +28,8 @@ router.get('/editar/:id',isLoggedIn, isImss, async(req,res) => {
 router.post('/editar/:id',isLoggedIn, isImss, async(req,res) => {
     const { id } = req.params;
     const {empresa, nombre,ciudad,puesto,horario,sueldoBase,banco,clabe,cuenta,infonavit, rebajeInfonavit,sueldoIMSS, fonacot, rebajeFonacot,NSS,CURP,RFC, patron, idEmpleado,fechaIngreso} = req.body;
+    console.log(idEmpleado)
+    console.log(patron)
     const newLink = {
         empresaId: empresa,
         nombre,
