@@ -8,10 +8,11 @@ const pool = require('../database');
 
 router.get('/', isLoggedIn, isImss, async(req,res) => {
     const empresas = await pool.query('SELECT * FROM empresa');
+    const patrones = await pool.query('SELECT * FROM patrones')
     //const operaciones = await pool.query('SELECT * FROM operacion LEFT JOIN trabajador ON operacion.trabajadorId=trabajador.id JOIN empresa ON trabajador.empresaId = empresa.id');
-    const trabajadores = await pool.query('SELECT trabajador.*, empresa.nombreEmpresa FROM trabajador LEFT JOIN empresa ON trabajador.empresaId=empresa.id WHERE estatus = 1 AND sueldoIMSS != 0');
+    const trabajadores = await pool.query('SELECT trabajador.*, empresa.nombreEmpresa, patrones.patron FROM trabajador LEFT JOIN empresa ON trabajador.empresaId=empresa.id LEFT JOIN patrones ON trabajador.patronId=patrones.idpatrones WHERE estatus = 1 AND sueldoIMSS != 0');
     const pendientes = await pool.query('SELECT * FROM trabajador WHERE sueldoIMSS = 0 AND estatus = 1');
-    res.render("../views/imss/index.hbs", {empresas, trabajadores, pendientes});
+    res.render("../views/imss/index.hbs", {empresas, trabajadores, pendientes, patrones});
 });
 
 router.get('/editar/:id',isLoggedIn, isImss, async(req,res) => {
@@ -20,12 +21,15 @@ router.get('/editar/:id',isLoggedIn, isImss, async(req,res) => {
     //const operaciones = await pool.query('SELECT * FROM operacion LEFT JOIN trabajador ON operacion.trabajadorId=trabajador.id JOIN empresa ON trabajador.empresaId = empresa.id');
     const trabajadores = await pool.query('SELECT trabajador.*, empresa.nombreEmpresa, patrones.patron FROM trabajador LEFT JOIN empresa ON trabajador.empresaId=empresa.id LEFT JOIN patrones ON trabajador.patronId=patrones.idpatrones WHERE trabajador.id = ?', [id]);
     const empresas = await pool.query('SELECT id, nombreEmpresa FROM empresa;');
-    res.render("../views/imss/editar.hbs", {trabajador: trabajadores[0], empresas});
+    const patrones = await pool.query('SELECT * FROM patrones');
+    res.render("../views/imss/editar.hbs", {trabajador: trabajadores[0], empresas, patrones});
 });
 
 router.post('/editar/:id',isLoggedIn, isImss, async(req,res) => {
     const { id } = req.params;
-    const {empresa, nombre,ciudad,puesto,horario,sueldoBase,banco,clabe,cuenta,infonavit, rebajeInfonavit,sueldoIMSS, fonacot, rebajeFonacot,NSS,CURP,RFC} = req.body;
+    const {empresa, nombre,ciudad,puesto,horario,sueldoBase,banco,clabe,cuenta,infonavit, rebajeInfonavit,sueldoIMSS, fonacot, rebajeFonacot,NSS,CURP,RFC, patron, idEmpleado,fechaIngreso} = req.body;
+    console.log(idEmpleado)
+    console.log(patron)
     const newLink = {
         empresaId: empresa,
         nombre,
@@ -44,6 +48,9 @@ router.post('/editar/:id',isLoggedIn, isImss, async(req,res) => {
         rebajeInfonavit,
         fonacot,
         rebajeFonacot,
+        patronId:patron,
+        idEmpleado,
+        fechaIngreso
     };
     await pool.query('UPDATE trabajador set ? WHERE id = ?', [newLink, id]);
     res.redirect('/imss');
@@ -112,7 +119,7 @@ router.get('/addempleado/', async(req,res) => {
 });
 
 router.post('/addempleado/', async(req,res) => {
-    const {empresa, nombre,ciudad,direccion,puesto,horario,sueldoBase,banco,clabe,cuenta,infonavit, sueldoIMSS, rebajeInfonavit, fonacot, rebajeFonacot, NSS, CURP, RFC, patron, fechaIngreso} = req.body;
+    const {empresa, nombre,ciudad,direccion,puesto,horario,sueldoBase,banco,clabe,cuenta,infonavit, sueldoIMSS, rebajeInfonavit, fonacot, rebajeFonacot, NSS, CURP, RFC, patron, fechaIngreso, idEmpleado} = req.body;
     const iduser = await pool.query('SELECT usersId FROM empresa WHERE id = ?', [empresa]);
     const newLink = {
         empresaId: empresa,
@@ -136,7 +143,8 @@ router.post('/addempleado/', async(req,res) => {
         estatus: 1,
         direccion,
         patronId: patron,
-        fechaIngreso
+        fechaIngreso,
+        idEmpleado
     };
     await pool.query('INSERT INTO trabajador set ?', [newLink]);
     res.redirect('/imss');

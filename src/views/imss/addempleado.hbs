@@ -8,7 +8,11 @@
                         <label for="inputEmail4" class="form-label">Nombre</label>
                         <input type="text" class="form-control" name="nombre" required>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
+                        <label for="inputEmail4" class="form-label">ID Empleado</label>
+                        <input type="text" class="form-control" name="idEmpleado" >
+                    </div>
+                    <div class="col-md-3">
                         <label for="inputEmail4" class="form-label">NSS</label>
                         <input type="text" class="form-control" name="NSS" required>
                     </div>
@@ -29,7 +33,7 @@
                         <select name="patron" class="form-select" required>
                             <option selected disabled>Seleccionar...</option>
                             {{#each patrones}}
-                                <option value="{{id}}">{{patron}}</option>
+                                <option value="{{idpatrones}}">{{patron}}</option>
                             {{/each}}
                         </select>
                     </div>

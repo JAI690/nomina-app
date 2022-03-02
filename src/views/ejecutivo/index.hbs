@@ -6,7 +6,7 @@
         <div class="col-md-6 mx-auto">
             <div class="card">
                 <div class="card-body">
-                    <form class="row gx-3 gy-2 align-items-center">
+                    <!--
                     <div class="col-md-12">
                         <div class="d-grid gap-2">
                             <a href="/ejecutivo/heb" class="btn btn-primary m-4">
@@ -14,6 +14,7 @@
                             </a>
                         </div>
                     </div>
+                    
                     <div class="col-md-12">
                         <div class="d-grid gap-2">
                             <a href="/ejecutivo/alta" class="btn btn-success m-4">
@@ -21,29 +22,26 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    -->
+                    <form method="GET" action="/ejecutivo/nomina/">
+                    <div class="col-md-12">
                       <label for="inputAddress" class="form-label">Empresa:</label>
                       <div class="input-group">
-                            <select class="form-select" id="empresa">
+                            <select class="form-select" id="empresa" name="idEmpresa" required>
+                                
                             </select>
                       </div>
-                      
                     </div>
-
-                    <div class="col-md-3">
-                      <label for="inputAddress"class="form-label" >Del:</label>
-                      <div class="input-group">
-                      <input type="date"  id="inputFechaInicio">
-                      </div>
-                    </div>
-
-                    <div class="col-md-3">
-                      <label for="inputAddress" class="form-label">Al:</label>
-                       <div class="input-group">
-                      <input type="date" id="inputFechaFin">
-                      </div>
+                    <div class="col-md-12">
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success m-4">
+                                 Crear Nomina
+                            </button>
+                        </div>
                     </div>
                     </form>
+
+                   
                 </div>
             </div>
         </div>
@@ -61,20 +59,10 @@
     <table class="table table-hover " width="500px"id="myTable">
     <thead class="thead-dark">
         <tr>
-
+            <th scope="col">Empresa</th>
             <th scope="col">Ciudad</th>
             <th scope="col">Nombre</th>
             <th scope="col">Puesto</th>
-            <th scope="col">Faltas</th>
-            <th scope="col">Compensaciones</th>
-            <th scope="col">Rebajes</th>
-            <th scope="col">ISR</th>
-            <th scope="col">Subsidio</th>
-            <th scope="col">Aportacion IMSS</th>
-            <th scope="col">Fonacot</th>
-            <th scope="col">Infonavit</th>
-
-
         </tr>
     </thead>
     <tbody>
@@ -93,35 +81,13 @@
                 <td scope="row" hidden>
                     <input type="number" value="{{sueldoBase}}" name="sueldoBase" readonly>
                 </td>
+                <td scope="row">{{nombreEmpresa}}</td>
                 <td scope="row">{{ciudad}}</td>
                 <td scope="row">
                     <input type="text" style="border: hidden;" style="background-color:transparent;" value="{{nombre}}" name="nombre" readonly>
                 </td>
                 <td scope="row">{{puesto}}</td>
-                <td>
-                    <input type="number"  width="50" name="faltas" step='1' min='0' max='15' required>
-                </td>
-                <td>
-                    <input type="number" name="compensacion" step='0.01' required>
-                </td>
-                <td>
-                    <input type="number" name="rebajes" step='0.01' required>
-                </td>
-                <td>
-                    <input type="number" name="ISR" step='0.01' required>
-                </td>
-                <td>
-                    <input type="number" name="subsidio" step='0.01' required>
-                </td>
-                <td>
-                    <input type="number" name="IMSSaportacion" step='0.01' required>
-                </td>
-                <td>
-                    <input type="number" value="{{rebajeFonacot}}" placeholder="{{rebajeFonacot}}" name="fonacot" step='0.01' required>
-                </td>
-                <td>
-                    <input type="number" value="{{rebajeInfonavit}}" placeholder="{{rebajeInfonavit}}"name="infonavit" step='0.01' required>
-                </td>
+                
 
             </tr>
         {{/each}}
@@ -129,54 +95,10 @@
     </tbody>
     </table>
     </div>
-            <input type="text" id="esquema" name="esquema" hidden> 
-            <input type="date" id="fechaInicio" name="fechaInicio" hidden required>    
-            <input type="date" id="fechaFin" name="fechaFin" hidden required> 
-            <div class="form-group mb-3">
-                
-                            <div class="d-grid gap-2">
-                                   <button class="btn btn-primary">
-                                    Pagar
-                                </button>
-                            </div>
-            </div>
-
-    
-            </form>
 </div>
 
 
 <script>
-    const segundosAdias = 24*60*60*(1000);
-    let dias = 22;
-    const tiempoTranscurrido = Date.now();
-    const hoy = new Date(tiempoTranscurrido);
-    const cero = function(fecha){
-        if(fecha<10){
-            return('0'+fecha);
-        }else{
-            return(fecha);
-        }
-    }
-
-    let inicioMin2 = new Date(tiempoTranscurrido-(dias*segundosAdias));
-    let inicioMin = ((inicioMin2.getFullYear().toString()) + '-' + cero(inicioMin2.getMonth()+1) + '-' + cero(inicioMin2.getDate()));
-    let inicioMax2 = new Date(tiempoTranscurrido-(7*segundosAdias));
-    let inicioMax = ((inicioMax2.getFullYear().toString()) + '-' + cero(inicioMax2.getMonth()+1) + '-' + cero(inicioMax2.getDate()));
-
-    let finMin2 = new Date(tiempoTranscurrido-(12*segundosAdias));
-    let finMin = ((finMin2.getFullYear().toString()) + '-' + cero(finMin2.getMonth()+1) + '-' + cero(finMin2.getDate()));
-    let finMax2 = new Date(tiempoTranscurrido);
-    let finMax = ((finMax2.getFullYear().toString()) + '-' + cero(finMax2.getMonth()+1) + '-' + cero(finMax2.getDate()));
-
-    inputFechaIni = document.getElementById("inputFechaInicio");
-    inputFechaIni.setAttribute("min", inicioMin);
-    inputFechaIni.setAttribute("max", inicioMax);
-
-    inputFechaFin = document.getElementById("inputFechaFin");
-    inputFechaFin.setAttribute("min", finMin);
-    inputFechaFin.setAttribute("max", finMax);
-
 
 
    let empresas= [];
@@ -191,13 +113,10 @@
         cotizador.push("{{cotizador cotizador}}")
     {{/each}}
 
-    console.log(cotizador)
-    console.log(esquemas)
-
     const empresa = document.getElementById("empresa");
     for(i=0; i<empresas.length;i++){
         let opcion = document.createElement('option');
-        opcion.setAttribute("value", i);
+        opcion.setAttribute("value", empresas[i]);
         let texto = document.createTextNode(empresas[i]);
         opcion.appendChild(texto);
         empresa.appendChild(opcion);
@@ -207,19 +126,23 @@
   function(){
     var input, filter, table, tr, td, i, txtValue;
     input = document.getElementById("empresa");
-    filter = empresasID[input.value].toUpperCase();
+    filter = input.value.toUpperCase();
     table = document.getElementById("myTable");
     tr = table.getElementsByTagName("tr");
 
-    inputEsquema = document.getElementById("esquema");
-    inputEsquema.setAttribute("value","")
-    input.value
+
+    //inputEsquema = document.getElementById("esquema");
+    //inputEsquema.setAttribute("value","")
+    //input.value
     // Loop through all table rows, and hide those who don't match the search query
     for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[0];
+      td = tr[i].getElementsByTagName("td")[4];
+      
       if (td) {
         txtValue = td.textContent || td.innerText;
+
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            
           tr[i].style.display = "";
         } else {
           tr[i].style.display = "none";
@@ -228,24 +151,7 @@
     }
   });
 
-    const esquema = document.getElementById("esquema");
-    esquema.setAttribute("value",esquemas[empresa.value]);
-
-    const inputfechainicio = document.getElementById("inputFechaInicio");
-    const inputfechafin = document.getElementById("inputFechaFin");
-
-    const outputfechainicio = document.getElementById("fechaInicio");
-    const outputfechafin = document.getElementById("fechaFin");
-
-    inputfechainicio.addEventListener('change', function(){
-        let fecha = inputfechainicio.value;
-        outputfechainicio.setAttribute("value",fecha);
-    })
-
-    inputfechafin.addEventListener('change', function(){
-        let fecha2 = inputfechafin.value;
-        outputfechafin.setAttribute("value",fecha2);
-    })
+    
 
 
 </script>

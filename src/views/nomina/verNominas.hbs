@@ -4,8 +4,13 @@
             <div class="card">
                 <div class="card-body">
                     <form class="row gx-3 gy-2 align-items-center">
-                    <div class="col-md-12" style="text-align: center;">
-                      <h3>Nomina de {{nomina.[0].empresaNombre}}</h3>
+                    <div class="col-md-12">
+                      <label for="inputAddress" class="form-label">Empresa:</label>
+                      <div class="input-group">
+                            <select class="form-select" id="empresa">
+                            <option selected>Seleccionar...</option>
+                            </select>
+                      </div>
                       
                     </div>
                     </form>
@@ -23,43 +28,21 @@
         <tr>
         <th scope="col">ID</th>
         <th scope="col">Empresa</th>
-        <th scope="col">Nombres</th>
-        <th scope="col" onclick="sortTable(3, 'str')">Banco &gt</th>
-        <th scope="col">Cuenta</th>
-        <th scope="col">Clabe Interbancaria</th>
-        <th scope="col">Sueldo IMSS</th>
-        <th scope="col">Total a pagar</th>
-        <th scope="col">Del</th>
-        <th scope="col">Al</th>
-        <th scope="col">Pagado</th>
+        <th></th>
         </tr>
     </thead>
     <tbody>
-        {{#each operaciones}}
+        {{#each nominas}}
             <tr>
-            <td scope="row">{{trabajadorId}}</td>
-            <td>{{nombreEmpresa}}</td>
-            <td>{{nombre}}</td>
-            <td><p class="m-2">{{banco}}</p></td>
-            <td><p>{{cuenta}}</p></td>
-            <td><p class="m-2">{{clabe}}</p></td>
-            <td><p>{{accountingFormat IMSSpago}}</p></td>
-            <td><p>{{accountingFormat sueldoNeto}}</p></td>
-            <td><p>{{dateFormat fechaInicio}}</p></td>
-            <td><p>{{dateFormat fechaFin}}</p></td>
-            <td><input type="checkbox" name="estatusPago" value="{{operacionId}}"></td>
+            <td scope="row">{{idnominas}}</td>
+            <td>{{empresaNombre}}</td>
+            <td><a href="/nomina/nomina/{{idnominas}}">Pagar</a></td>
             </tr>
         {{/each}}
     </tbody>
     </table>
     <input value="" name="fecha" id="fecha" hidden>
-                        <div class="col-12">
-                        <div class="d-grid gap-2">
-                                <button class="btn btn-primary">
-                                    Pagar
-                                </button>
-                        </div>
-                    </div>
+                        
     </form>
 </div>
 
