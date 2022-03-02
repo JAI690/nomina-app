@@ -109,6 +109,7 @@ router.post('/', async(req,res) => {
 
         
         let dias = totaldias-faltas[index];
+        let sueldoNeto = sueldo(dias,sueldoBase[index]) - sueldo(dias,IMSS[index]) + compensacion[index] - rebajes[index] - ISR[index] - fonacot[index] - infonavit[index] + subsidio[index] - IMSSaportacion[index];
         lista.push(uuidNomina)
         lista.push(id[index]);
         lista.push("Completa");
@@ -125,7 +126,7 @@ router.post('/', async(req,res) => {
         lista.push(subsidio[index]);
         lista.push(fonacot[index]);
         lista.push(IMSSaportacion[index]);
-        lista.push(sueldo(dias,sueldoBase[index]));
+        lista.push(sueldoNeto);
         
         listasuperior.push(lista);
     }}
@@ -134,9 +135,7 @@ router.post('/', async(req,res) => {
         idnominas:uuidNomina,
         empresaNombre: nombreEmpresa
     }
-    console.log(uuidNomina)
-    console.log(nombreEmpresa)
-    console.log(nominas)
+
     await pool.query('INSERT INTO operacion (nominaId,trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, sueldoBaseIMSS, Infonavit, fechaInicio, fechaFin, pagado, subsidio, fonacot, IMSS, sueldoNeto) VALUES ?', [listasuperior]);
     await pool.query('INSERT INTO nominas set ?', [nominas])
     res.redirect('/ejecutivo/')
