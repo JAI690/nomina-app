@@ -5,7 +5,7 @@
                 <div class="card-body">
                     <form class="row g-3" action="/imss/addempleado/", method="POST">
                     <div class="col-md-4">
-                        <label for="inputEmail4" class="form-label">Nombre</label>
+                        <label for="inputEmail4" class="form-label">Nombre Completo</label>
                         <input type="text" class="form-control" name="nombre" required>
                     </div>
                     <div class="col-md-2">
@@ -40,7 +40,7 @@
 
 
                      <div class="col-md-3">
-                        <label for="inputEmail4" class="form-label">Empresa</label>
+                        <label for="inputEmail4" class="form-label">Cliente</label>
                         <select name="empresa" class="form-select" required>
                             <option selected disabled>Seleccionar...</option>
                             {{#each empresa}}
