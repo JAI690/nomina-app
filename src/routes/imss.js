@@ -27,12 +27,16 @@ router.get('/editar/:id',isLoggedIn, isImss, async(req,res) => {
 
 router.post('/editar/:id',isLoggedIn, isImss, async(req,res) => {
     const { id } = req.params;
-    const {empresa, nombre,ciudad,puesto,horario,sueldoBase,banco,clabe,cuenta,infonavit, rebajeInfonavit,sueldoIMSS, fonacot, rebajeFonacot,NSS,CURP,RFC, patron, idEmpleado,fechaIngreso} = req.body;
-    console.log(idEmpleado)
-    console.log(patron)
+    const {empresa, nombre, apellidos, ciudad, direccion, calle, numeroInterior, numeroExterior, codigoPostal,
+        colonia, municipio, estado, puesto, horario, sueldoBase, banco, clabe, cuenta, infonavit, 
+        sueldoIMSS, rebajeInfonavit, fonacot, rebajeFonacot, NSS, CURP, RFC, patron, fechaIngreso, 
+        idEmpleado} = req.body;
+
+    const iduser = await pool.query('SELECT usersId FROM empresa WHERE id = ?', [empresa]);
     const newLink = {
         empresaId: empresa,
         nombre,
+        apellidos,
         NSS,
         RFC,
         CURP,
@@ -40,17 +44,27 @@ router.post('/editar/:id',isLoggedIn, isImss, async(req,res) => {
         puesto,
         horario,
         sueldoBase,
-        sueldoIMSS,
         banco,
         clabe,
         cuenta,
         infonavit,
         rebajeInfonavit,
+        sueldoIMSS,
+        usersId: iduser[0].usersId,
         fonacot,
         rebajeFonacot,
-        patronId:patron,
-        idEmpleado,
-        fechaIngreso
+        estatus: 1,
+        direccion,
+        calle,
+        numeroInterior,
+        numeroExterior,
+        codigoPostal,
+        colonia,
+        municipio,
+        estado,
+        patronId: patron,
+        fechaIngreso,
+        idEmpleado
     };
     await pool.query('UPDATE trabajador set ? WHERE id = ?', [newLink, id]);
     res.redirect('/imss');
@@ -119,11 +133,16 @@ router.get('/addempleado/', async(req,res) => {
 });
 
 router.post('/addempleado/', async(req,res) => {
-    const {empresa, nombre,ciudad,direccion,puesto,horario,sueldoBase,banco,clabe,cuenta,infonavit, sueldoIMSS, rebajeInfonavit, fonacot, rebajeFonacot, NSS, CURP, RFC, patron, fechaIngreso, idEmpleado} = req.body;
+    const {empresa, nombre, apellidos, ciudad, direccion, calle, numeroInterior, numeroExterior, codigoPostal,
+           colonia, municipio, estado, puesto, horario, sueldoBase, banco, clabe, cuenta, infonavit, 
+           sueldoIMSS, rebajeInfonavit, fonacot, rebajeFonacot, NSS, CURP, RFC, patron, fechaIngreso, 
+           idEmpleado} = req.body;
+
     const iduser = await pool.query('SELECT usersId FROM empresa WHERE id = ?', [empresa]);
     const newLink = {
         empresaId: empresa,
         nombre,
+        apellidos,
         NSS,
         RFC,
         CURP,
@@ -142,6 +161,13 @@ router.post('/addempleado/', async(req,res) => {
         rebajeFonacot,
         estatus: 1,
         direccion,
+        calle,
+        numeroInterior,
+        numeroExterior,
+        codigoPostal,
+        colonia,
+        municipio,
+        estado,
         patronId: patron,
         fechaIngreso,
         idEmpleado

@@ -5,8 +5,12 @@
                 <div class="card-body">
                     <form class="row g-3" action="/imss/editar/{{trabajador.id}}", method="POST">
                     <div class="col-md-4">
-                        <label for="inputEmail4" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" placeholder="{{trabajador.nombre}}" value="{{trabajador.nombre}}" name="nombre" >
+                        <label for="inputEmail4" class="form-label">Nombre(s)</label>
+                        <input type="text" class="form-control" name="nombre" value="{{trabajador.nombre}}" placeholder="{{trabajador.nombre}}" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">Apellidos</label>
+                        <input type="text" class="form-control" name="apellidos" value="{{trabajador.apellidos}}" placeholder="{{trabajador.apellidos}}"  required>
                     </div>
                     <div class="col-md-2">
                         <label for="inputEmail4" class="form-label">ID Empleado</label>
@@ -27,6 +31,34 @@
                      <div class="col-md-4">
                         <label for="inputEmail4" class="form-label">Dirección</label>
                         <input type="text" class="form-control" placeholder="{{trabajador.direccion}}" value="{{trabajador.direccion}}" name="direccion" >
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">Calle</label>
+                        <input type="text" class="form-control" name="calle" value="{{trabajador.calle}}" placeholder="{{trabajador.calle}}"  >
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">Número Interior</label>
+                        <input type="number" class="form-control" name="numerointerior" value="{{trabajador.numeroInterior}}" placeholder="{{trabajador.numeroInterior}}" >
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">Número Exterior</label>
+                        <input type="text" class="form-control" name="numeroexterior" value="{{trabajador.numeroExterior}}" placeholder="{{trabajador.numeroExterior}}" >
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">Código Postal</label>
+                        <input type="text" class="form-control" name="codigopostal" value="{{trabajador.codigoPostal}}" placeholder="{{trabajador.codigoPostal}}" >
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">Colonia</label>
+                        <input type="text" class="form-control" name="colonia" value="{{trabajador.colonia}}" placeholder="{{trabajador.colonia}}" >
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">Municipio</label>
+                        <input type="text" class="form-control" name="municipio" value="{{trabajador.municipio}}" placeholder="{{trabajador.municipio}}" >
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputEmail4" class="form-label">Estado</label>
+                        <input type="text" class="form-control" name="estado" value="{{trabajador.estado}}" placeholder="{{trabajador.estado}}" >
                     </div>
                     <div class="col-md-4">
                         <label for="inputEmail4" class="form-label">Patrón</label>
