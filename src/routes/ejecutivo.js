@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {isLoggedIn, isAdmin, isEjecutivo} = require('../lib/auth');
 const { v4 } = require('uuid');
+const  getWeek  = require('../lib/extras')
 
 
 //Conexión a la base de datos
@@ -43,10 +44,8 @@ router.get('/nomina', async(req,res) => {
     const id = req.user.id
     const {idEmpresa} = req.query
 
-    console.log(idEmpresa)
-    const empresas = await pool.query('SELECT * FROM empresa WHERE nombreEmpresa = ?', [idEmpresa]);
-    const trabajadores = await pool.query('SELECT trabajador.*, empresa.nombreEmpresa FROM trabajador LEFT JOIN empresa ON trabajador.empresaId = empresa.id WHERE estatus = 1 AND empresa.nombreEmpresa = ?', [idEmpresa]);
-    console.log(trabajadores)
+    const empresas = await pool.query('SELECT * FROM empresa WHERE id = ?', [idEmpresa]);
+    const trabajadores = await pool.query('SELECT trabajador.*, empresa.nombreEmpresa FROM trabajador LEFT JOIN empresa ON trabajador.empresaId = empresa.id WHERE estatus = 1 AND empresa.id = ?', [idEmpresa]);
 
     if(empresas.nombreEmpresa == 'HEB'){
         res.render("../views/ejecutivo/heb.hbs", {trabajadores, empresas: empresas});
@@ -75,7 +74,7 @@ router.post('/', async(req,res) => {
     const hoy = new Date(tiempoTranscurrido);
 
     const sueldo = function(dias,salarioreal){
-        return(dias*salarioreal);
+        return(Number(dias*salarioreal));
     }
     
 
@@ -93,14 +92,12 @@ router.post('/', async(req,res) => {
         lista.push(ISR);
         lista.push(IMSS);
         lista.push(infonavit);
-        lista.push(fechaInicio);
-        lista.push(fechaFin);
         lista.push("0");
         lista.push(subsidio);
         lista.push(fonacot);
         lista.push(IMSSaportacion);
         lista.push(sueldoNeto);
-        
+        lista.push(sueldo(dias,IMSS))
         listasuperior.push(lista);
 
     }else{
@@ -120,23 +117,27 @@ router.post('/', async(req,res) => {
         lista.push(ISR[index]);
         lista.push(IMSS[index]);
         lista.push(infonavit[index]);
-        lista.push(fechaInicio);
-        lista.push(fechaFin);
         lista.push("0");
         lista.push(subsidio[index]);
         lista.push(fonacot[index]);
         lista.push(IMSSaportacion[index]);
         lista.push(sueldoNeto);
-        
+        lista.push(sueldo(dias,IMSS[index]))
         listasuperior.push(lista);
     }}
 
+    const semananomina = getWeek(hoy)-1
+
     const nominas = {
         idnominas:uuidNomina,
-        empresaNombre: nombreEmpresa
+        empresaNombre: nombreEmpresa,
+        fechaInicio,
+        fechaFin,
+        createdAt: hoy,
+        semananomina
     }
 
-    await pool.query('INSERT INTO operacion (nominaId,trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, sueldoBaseIMSS, Infonavit, fechaInicio, fechaFin, pagado, subsidio, fonacot, IMSS, sueldoNeto) VALUES ?', [listasuperior]);
+    await pool.query('INSERT INTO operacion (nominaId,trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, sueldoBaseIMSS, Infonavit, pagado, subsidio, fonacot, IMSS, sueldoNeto, IMSSpago) VALUES ?', [listasuperior]);
     await pool.query('INSERT INTO nominas set ?', [nominas])
     res.redirect('/ejecutivo/')
 });

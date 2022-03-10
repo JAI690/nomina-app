@@ -12,6 +12,8 @@
                       
                     </div>
 
+
+
                     <div class="col-md-6">
                       <label for="inputAddress"class="form-label" >Del:</label>
                       <div class="input-group">
@@ -39,7 +41,7 @@
 
 <div class="container p-3">
     <form action="/ejecutivo" class="row g-3" method="POST">
-    <input name="nombreEmpresa" value="{{trabajadores.[0].nombreEmpresa}}" hidden>
+    <input name="nombreEmpresa" value="{{empresas.[0].id}}" hidden>
     <div class="table-responsive">
     <table class="table table-hover " width="500px"id="myTable">
     <thead class="thead-dark">
