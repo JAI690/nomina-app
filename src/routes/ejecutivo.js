@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {isLoggedIn, isAdmin, isEjecutivo} = require('../lib/auth');
 const { v4 } = require('uuid');
-const  getWeek  = require('../lib/extras')
+const  {getWeek, calcularISR}  = require('../lib/extras')
 
 
 //Conexión a la base de datos
@@ -54,11 +54,21 @@ router.get('/nomina', async(req,res) => {
     res.render("../views/ejecutivo/crearnomina.hbs", {trabajadores, empresas: empresas});
 })
 
+router.get('/ejemplo', (req,res) => {
+    const isr = calcularISR(7500,'Quincena')
+    res.send({isr})
+})
+
+///////////////////////////////////////////////////////////////////////////////////
+//////                              CREAR NÓMINA                             //////
+///////////////////////////////////////////////////////////////////////////////////
+
 router.post('/', async(req,res) => {
-    const { IMSS, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin, subsidio, IMSSaportacion, fonacot, infonavit, ISR, nombreEmpresa} = req.body;
+    const { IMSS, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin, subsidio, fonacot, infonavit, nombreEmpresa} = req.body;
     let {id} = req.body
     const uuidNomina = String(v4());
     let listasuperior = [];
+    console.log(esquema)
     if(esquema==='Semana'){
         totaldias = 7;
     }else{
@@ -70,6 +80,7 @@ router.post('/', async(req,res) => {
     //}else{
       //  totaldias = 15;
     //};
+
     const tiempoTranscurrido = Date.now();
     const hoy = new Date(tiempoTranscurrido);
 
@@ -81,7 +92,20 @@ router.post('/', async(req,res) => {
     if(typeof(id)==='string'){
         let lista = [];
         let dias = totaldias-faltas;
-        let sueldoNeto = sueldo(dias,sueldoBase) - sueldo(dias,IMSS) + compensacion - rebajes - ISR - fonacot - infonavit + subsidio - IMSSaportacion
+
+        //CALCULAR SUELDO IMSS
+        let sueldoIMSS = sueldo(dias,IMSS) - fonacot - infonavit;
+
+        //CALCULAR ISR CON BASE AL SUELDO IMSS
+        let isr = calcularISR(sueldoIMSS,esquema);
+
+        //CALCULAR SUELDO IMSS NETO
+        let sueldoIMSSNeto = sueldoIMSS - isr;
+
+        //CALCULAR SUELDO NETO
+        let sueldoBaseTotal = sueldo(dias,sueldoBase)
+        let sueldoNeto = sueldoBaseTotal - sueldoIMSS + compensacion - rebajes;
+
         lista.push(uuidNomina)
         lista.push(id);
         lista.push("Completa");
@@ -89,24 +113,33 @@ router.post('/', async(req,res) => {
         lista.push(rebajes);
         lista.push(sueldoBase);
         lista.push(dias);
-        lista.push(ISR);
+        lista.push(isr);
         lista.push(IMSS);
         lista.push(infonavit);
         lista.push("0");
-        lista.push(subsidio);
         lista.push(fonacot);
-        lista.push(IMSSaportacion);
         lista.push(sueldoNeto);
-        lista.push(sueldo(dias,IMSS))
+        lista.push(sueldoIMSSNeto)
         listasuperior.push(lista);
 
     }else{
     for (let index = 0; index < id.length; index++) {
         let lista = [];
-
-        
         let dias = totaldias-faltas[index];
-        let sueldoNeto = sueldo(dias,sueldoBase[index]) - sueldo(dias,IMSS[index]) + compensacion[index] - rebajes[index] - ISR[index] - fonacot[index] - infonavit[index] + subsidio[index] - IMSSaportacion[index];
+
+        //CALCULAR SUELDO IMSS
+        let sueldoIMSS = sueldo(dias,IMSS[index]) - fonacot[index] - infonavit[index];
+
+        //CALCULAR ISR CON BASE AL SUELDO IMSS
+        let isr = calcularISR(sueldoIMSS,esquema);
+
+        //CALCULAR SUELDO IMSS NETO
+        let sueldoIMSSNeto = sueldoIMSS - isr;
+
+        //CALCULAR SUELDO NETO
+        let sueldoBaseTotal = sueldo(dias,sueldoBase[index])
+        let sueldoNeto = sueldoBaseTotal - sueldoIMSS + compensacion[index] - rebajes[index];
+ 
         lista.push(uuidNomina)
         lista.push(id[index]);
         lista.push("Completa");
@@ -114,15 +147,13 @@ router.post('/', async(req,res) => {
         lista.push(rebajes[index]);
         lista.push(sueldoBase[index]);
         lista.push(dias);
-        lista.push(ISR[index]);
+        lista.push(isr);
         lista.push(IMSS[index]);
         lista.push(infonavit[index]);
         lista.push("0");
-        lista.push(subsidio[index]);
         lista.push(fonacot[index]);
-        lista.push(IMSSaportacion[index]);
         lista.push(sueldoNeto);
-        lista.push(sueldo(dias,IMSS[index]))
+        lista.push(sueldoIMSSNeto)
         listasuperior.push(lista);
     }}
 
@@ -137,7 +168,7 @@ router.post('/', async(req,res) => {
         semananomina
     }
 
-    await pool.query('INSERT INTO operacion (nominaId,trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, sueldoBaseIMSS, Infonavit, pagado, subsidio, fonacot, IMSS, sueldoNeto, IMSSpago) VALUES ?', [listasuperior]);
+    await pool.query('INSERT INTO operacion (nominaId,trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, sueldoBaseIMSS, Infonavit, pagado, fonacot, sueldoNeto, IMSSpago) VALUES ?', [listasuperior]);
     await pool.query('INSERT INTO nominas set ?', [nominas])
     res.redirect('/ejecutivo/')
 });
