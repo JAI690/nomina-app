@@ -68,7 +68,7 @@ router.post('/', async(req,res) => {
     let {id} = req.body
     const uuidNomina = String(v4());
     let listasuperior = [];
-    console.log(esquema)
+
     if(esquema==='Semana'){
         totaldias = 7;
     }else{

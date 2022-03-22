@@ -166,6 +166,7 @@ const ISRTarifas = {
 }
 
 const calcularISR = function(sueldo,cotizador){
+    
     const tarifa = ISRTarifas[cotizador].find((segmento) => sueldo>segmento.inf && sueldo<segmento.sup);
     const gravable = sueldo-tarifa.inf;
     const isr = Number.parseFloat(tarifa.cuota + (gravable*tarifa.porcentaje/100)).toFixed(2)
