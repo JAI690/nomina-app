@@ -29,7 +29,7 @@ router.get('/editar/:id', isLoggedIn, isImss, async(req,res) => {
 
 router.post('/editar/:id',isLoggedIn, isImss, async(req,res) => {
     const { id } = req.params;
-    const {empresa, nombre, apellidoPaterno, apellidoMaterno, ciudad, direccion, calle, numeroInterior, numeroExterior, codigoPostal,
+    const {empresa, nombre, apellidoPaterno, apellidoMaterno, estadoCivil, ciudad, direccion, calle, numeroInterior, numeroExterior, codigoPostal,
         colonia, municipio, estado, puesto, horario, sueldoBase, banco, clabe, cuenta, infonavit, 
         sueldoIMSS, rebajeInfonavit, fonacot, rebajeFonacot, NSS, CURP, RFC, patron, fechaIngreso, 
         idEmpleado} = req.body;
@@ -40,6 +40,7 @@ router.post('/editar/:id',isLoggedIn, isImss, async(req,res) => {
         nombre,
         apellidoPaterno,
         apellidoMaterno,
+        estadoCivil,
         NSS,
         RFC,
         CURP,
