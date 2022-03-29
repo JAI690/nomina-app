@@ -243,7 +243,7 @@ router.get('/alta',isLoggedIn, isEjecutivo, async(req,res) => {
 
 
 router.post('/alta', async(req,res) => {
-    const {empresa, nombre, apellidoPaterno, apellidoMaterno, ciudad, direccion, calle, numeroInterior, numeroExterior, codigoPostal,
+    const {empresa, nombre, apellidoPaterno, apellidoMaterno, direccion, calle, numeroInterior, numeroExterior, codigoPostal,
         colonia, municipio, estado, puesto, horario, sueldoBase, banco, clabe, cuenta, infonavit, 
         sueldoIMSS, rebajeInfonavit, fonacot, rebajeFonacot, NSS, CURP, RFC, patron, fechaIngreso,  estadoCivil,
         idEmpleado} = req.body;
@@ -258,7 +258,6 @@ router.post('/alta', async(req,res) => {
      NSS,
      RFC,
      CURP,
-     ciudad,
      puesto,
      horario,
      sueldoBase,
