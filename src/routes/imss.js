@@ -139,7 +139,7 @@ router.get('/addempleado/', isLoggedIn, isImss, async(req,res) => {
 router.post('/addempleado/', isLoggedIn, isImss, async(req,res) => {
     const {empresa, nombre, apellidoPaterno, apellidoMaterno, ciudad, direccion, calle, numeroInterior, numeroExterior, codigoPostal,
            colonia, municipio, estado, puesto, horario, sueldoBase, banco, clabe, cuenta, infonavit, 
-           sueldoIMSS, rebajeInfonavit, fonacot, rebajeFonacot, NSS, CURP, RFC, patron, fechaIngreso, 
+           sueldoIMSS, rebajeInfonavit, fonacot, rebajeFonacot, NSS, CURP, RFC, patron, fechaIngreso,  estadoCivil,
            idEmpleado} = req.body;
 
     const iduser = await pool.query('SELECT usersId FROM empresa WHERE id = ?', [empresa]);
@@ -148,6 +148,7 @@ router.post('/addempleado/', isLoggedIn, isImss, async(req,res) => {
         nombre,
         apellidoPaterno,
         apellidoMaterno,
+        estadoCivil,
         NSS,
         RFC,
         CURP,
@@ -233,13 +234,12 @@ router.get('/nomina', isLoggedIn, isImss, async(req,res) => {
 
     const nominas = await pool.query('SELECT nominas.*, empresa.*, users.nombre FROM nominas LEFT JOIN empresa ON nominas.empresaNombre=empresa.id LEFT JOIN users ON empresa.usersId=users.id WHERE createdAt <= ? AND createdAt >= ?', [hoy2pm,ayer2pm]);
     const ids = nominas.map((nomina) => {return(nomina.idnominas)})
-    console.log(nominas)
-    console.log(ids)
+
     let operaciones = null;
     if(ids.length > 0){
         operaciones = await pool.query('SELECT op.IMSSpago, op.sueldoNeto, op.dias, op.complementos, op.rebajes, n.semananomina, emp.nombreEmpresa, t.nombre, t.apellidoPaterno, t.apellidoMaterno, t.banco, t.cuenta, t.clabe, t.idEmpleado, patrones.registroPatronal, patrones.patron FROM operacion as op LEFT JOIN nominas as n ON op.nominaId = n.idnominas LEFT JOIN trabajador as t ON op.trabajadorId = t.id LEFT JOIN empresa as emp ON n.empresaNombre=emp.id LEFT JOIN patrones ON t.patronId = patrones.idpatrones WHERE op.nominaId IN (?)', [ids])
     }
-    console.log(operaciones)
+
     res.render("../views/imss/verNominas.hbs", {nominas,operaciones});
 
 })
