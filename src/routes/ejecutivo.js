@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {isLoggedIn, isAdmin, isEjecutivo} = require('../lib/auth');
 const { v4 } = require('uuid');
+const  {getWeek, calcularISR}  = require('../lib/extras')
 
 
 //Conexión a la base de datos
@@ -17,16 +18,16 @@ router.get('/',isLoggedIn, isEjecutivo, async(req,res) => {
     let empresas = {}
     let trabajadores = {}
     if(req.user.rol === 'admin'){
-        trabajadores = await pool.query('SELECT * FROM trabajador LEFT JOIN empresa ON trabajador.empresaId = empresa.id WHERE estatus = 1');
+        trabajadores = await pool.query('SELECT trabajador.id, trabajador.nombre,trabajador.ciudad, trabajador.puesto, empresa.nombreEmpresa, empresa.id as empresaId FROM trabajador LEFT JOIN empresa ON trabajador.empresaId = empresa.id WHERE estatus = 1');
         empresas = await pool.query('SELECT * FROM empresa ');
     }else{
-        trabajadores = await pool.query('SELECT * FROM trabajador LEFT JOIN empresa ON trabajador.empresaId = empresa.id WHERE empresa.usersId = ? AND estatus = 1',[id]);
+        trabajadores = await pool.query('SELECT trabajador.id, trabajador.nombre,trabajador.ciudad, trabajador.puesto, empresa.nombreEmpresa, empresa.id as empresaId FROM trabajador LEFT JOIN empresa ON trabajador.empresaId = empresa.id WHERE empresa.usersId = ? AND estatus = 1',[id]);
         empresas = await pool.query('SELECT * FROM empresa WHERE usersId = ?', [id]);
     }
     if(empresas.nombreEmpresa == 'HEB'){
         res.render("../views/ejecutivo/heb.hbs", {trabajadores, empresas: empresas});
     };
-
+    console.log(trabajadores)
     res.render("../views/ejecutivo/index.hbs", {trabajadores, empresas: empresas});
 });
 
@@ -43,10 +44,8 @@ router.get('/nomina', async(req,res) => {
     const id = req.user.id
     const {idEmpresa} = req.query
 
-    console.log(idEmpresa)
-    const empresas = await pool.query('SELECT * FROM empresa WHERE nombreEmpresa = ?', [idEmpresa]);
-    const trabajadores = await pool.query('SELECT trabajador.*, empresa.nombreEmpresa FROM trabajador LEFT JOIN empresa ON trabajador.empresaId = empresa.id WHERE estatus = 1 AND empresa.nombreEmpresa = ?', [idEmpresa]);
-    console.log(trabajadores)
+    const empresas = await pool.query('SELECT * FROM empresa WHERE id = ?', [idEmpresa]);
+    const trabajadores = await pool.query('SELECT trabajador.*, empresa.nombreEmpresa FROM trabajador LEFT JOIN empresa ON trabajador.empresaId = empresa.id WHERE estatus = 1 AND empresa.id = ?', [idEmpresa]);
 
     if(empresas.nombreEmpresa == 'HEB'){
         res.render("../views/ejecutivo/heb.hbs", {trabajadores, empresas: empresas});
@@ -55,11 +54,21 @@ router.get('/nomina', async(req,res) => {
     res.render("../views/ejecutivo/crearnomina.hbs", {trabajadores, empresas: empresas});
 })
 
+router.get('/ejemplo', (req,res) => {
+    const isr = calcularISR(7500,'Quincena')
+    res.send({isr})
+})
+
+///////////////////////////////////////////////////////////////////////////////////
+//////                              CREAR NÓMINA                             //////
+///////////////////////////////////////////////////////////////////////////////////
+
 router.post('/', async(req,res) => {
-    const { IMSS, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin, subsidio, IMSSaportacion, fonacot, infonavit, ISR, nombreEmpresa} = req.body;
+    const { IMSS, compensacion, faltas, rebajes, sueldoBase, esquema, fechaInicio, fechaFin, subsidio, fonacot, infonavit, nombreEmpresa} = req.body;
     let {id} = req.body
     const uuidNomina = String(v4());
     let listasuperior = [];
+
     if(esquema==='Semana'){
         totaldias = 7;
     }else{
@@ -71,18 +80,32 @@ router.post('/', async(req,res) => {
     //}else{
       //  totaldias = 15;
     //};
+
     const tiempoTranscurrido = Date.now();
     const hoy = new Date(tiempoTranscurrido);
 
     const sueldo = function(dias,salarioreal){
-        return(dias*salarioreal);
+        return(Number(dias*salarioreal));
     }
     
 
     if(typeof(id)==='string'){
         let lista = [];
         let dias = totaldias-faltas;
-        let sueldoNeto = sueldo(dias,sueldoBase) - sueldo(dias,IMSS) + compensacion - rebajes - ISR - fonacot - infonavit + subsidio - IMSSaportacion
+
+        //CALCULAR SUELDO IMSS
+        let sueldoIMSS = sueldo(dias,IMSS) - fonacot - infonavit;
+
+        //CALCULAR ISR CON BASE AL SUELDO IMSS
+        let isr = calcularISR(sueldoIMSS,esquema);
+
+        //CALCULAR SUELDO IMSS NETO
+        let sueldoIMSSNeto = sueldoIMSS - isr;
+
+        //CALCULAR SUELDO NETO
+        let sueldoBaseTotal = sueldo(dias,sueldoBase)
+        let sueldoNeto = sueldoBaseTotal - sueldoIMSS + compensacion - rebajes;
+
         lista.push(uuidNomina)
         lista.push(id);
         lista.push("Completa");
@@ -90,25 +113,33 @@ router.post('/', async(req,res) => {
         lista.push(rebajes);
         lista.push(sueldoBase);
         lista.push(dias);
-        lista.push(ISR);
+        lista.push(isr);
         lista.push(IMSS);
         lista.push(infonavit);
-        lista.push(fechaInicio);
-        lista.push(fechaFin);
         lista.push("0");
-        lista.push(subsidio);
         lista.push(fonacot);
-        lista.push(IMSSaportacion);
         lista.push(sueldoNeto);
-        
+        lista.push(sueldoIMSSNeto)
         listasuperior.push(lista);
 
     }else{
     for (let index = 0; index < id.length; index++) {
         let lista = [];
-
-        
         let dias = totaldias-faltas[index];
+
+        //CALCULAR SUELDO IMSS
+        let sueldoIMSS = sueldo(dias,IMSS[index]) - fonacot[index] - infonavit[index];
+
+        //CALCULAR ISR CON BASE AL SUELDO IMSS
+        let isr = calcularISR(sueldoIMSS,esquema);
+
+        //CALCULAR SUELDO IMSS NETO
+        let sueldoIMSSNeto = sueldoIMSS - isr;
+
+        //CALCULAR SUELDO NETO
+        let sueldoBaseTotal = sueldo(dias,sueldoBase[index])
+        let sueldoNeto = sueldoBaseTotal - sueldoIMSS + compensacion[index] - rebajes[index];
+ 
         lista.push(uuidNomina)
         lista.push(id[index]);
         lista.push("Completa");
@@ -116,28 +147,28 @@ router.post('/', async(req,res) => {
         lista.push(rebajes[index]);
         lista.push(sueldoBase[index]);
         lista.push(dias);
-        lista.push(ISR[index]);
+        lista.push(isr);
         lista.push(IMSS[index]);
         lista.push(infonavit[index]);
-        lista.push(fechaInicio);
-        lista.push(fechaFin);
         lista.push("0");
-        lista.push(subsidio[index]);
         lista.push(fonacot[index]);
-        lista.push(IMSSaportacion[index]);
-        lista.push(sueldo(dias,sueldoBase[index]));
-        
+        lista.push(sueldoNeto);
+        lista.push(sueldoIMSSNeto)
         listasuperior.push(lista);
     }}
 
+    const semananomina = getWeek(hoy)-1
+
     const nominas = {
         idnominas:uuidNomina,
-        empresaNombre: nombreEmpresa
+        empresaNombre: nombreEmpresa,
+        fechaInicio,
+        fechaFin,
+        createdAt: hoy,
+        semananomina
     }
-    console.log(uuidNomina)
-    console.log(nombreEmpresa)
-    console.log(nominas)
-    await pool.query('INSERT INTO operacion (nominaId,trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, sueldoBaseIMSS, Infonavit, fechaInicio, fechaFin, pagado, subsidio, fonacot, IMSS, sueldoNeto) VALUES ?', [listasuperior]);
+
+    await pool.query('INSERT INTO operacion (nominaId,trabajadorId, asistencia, complementos, rebajes, sueldoBase, dias, ISR, sueldoBaseIMSS, Infonavit, pagado, fonacot, sueldoNeto, IMSSpago) VALUES ?', [listasuperior]);
     await pool.query('INSERT INTO nominas set ?', [nominas])
     res.redirect('/ejecutivo/')
 });
@@ -212,12 +243,80 @@ router.get('/alta',isLoggedIn, isEjecutivo, async(req,res) => {
 
 
 router.post('/alta', async(req,res) => {
-    const {empresa, nombre,ciudad,puesto,horario,sueldoBase,banco,clabe,cuenta, patron, direccion, sueldoIMSS, fechaIngreso} = req.body;
+    const {empresa, nombre, apellidoPaterno, apellidoMaterno, ciudad, direccion, calle, numeroInterior, numeroExterior, codigoPostal,
+        colonia, municipio, estado, puesto, horario, sueldoBase, banco, clabe, cuenta, infonavit, 
+        sueldoIMSS, rebajeInfonavit, fonacot, rebajeFonacot, NSS, CURP, RFC, patron, fechaIngreso,  estadoCivil,
+        idEmpleado} = req.body;
+
+ const iduser = await pool.query('SELECT usersId FROM empresa WHERE id = ?', [empresa]);
+ const newLink = {
+     empresaId: empresa,
+     nombre,
+     apellidoPaterno,
+     apellidoMaterno,
+     estadoCivil,
+     NSS,
+     RFC,
+     CURP,
+     ciudad,
+     puesto,
+     horario,
+     sueldoBase,
+     banco,
+     clabe,
+     cuenta,
+     infonavit,
+     rebajeInfonavit,
+     sueldoIMSS,
+     usersId: iduser[0].usersId,
+     fonacot,
+     rebajeFonacot,
+     estatus: 1,
+     direccion,
+     calle,
+     numeroInterior,
+     numeroExterior,
+     codigoPostal,
+     colonia,
+     municipio,
+     estado,
+     patronId: patron,
+     fechaIngreso,
+     idEmpleado
+ };
+ await pool.query('INSERT INTO trabajador set ?', [newLink]);
+    res.redirect('/ejecutivo');
+});
+
+
+router.get('/editar/:id', isLoggedIn, isEjecutivo, async(req,res) => {
+    const { id } = req.params;
+    const ejecutivos = await pool.query('SELECT * FROM users WHERE rol = "Ejecutivo";');
+    //const operaciones = await pool.query('SELECT * FROM operacion LEFT JOIN trabajador ON operacion.trabajadorId=trabajador.id JOIN empresa ON trabajador.empresaId = empresa.id');
+    const trabajadores = await pool.query('SELECT trabajador.*, empresa.nombreEmpresa, patrones.patron FROM trabajador LEFT JOIN empresa ON trabajador.empresaId=empresa.id LEFT JOIN patrones ON trabajador.patronId=patrones.idpatrones WHERE trabajador.id = ?', [id]);
+    const empresas = await pool.query('SELECT id, nombreEmpresa FROM empresa;');
+    const patrones = await pool.query('SELECT * FROM patrones');
+    console.log(id)
+    res.render("../views/ejecutivo/editar.hbs", {trabajador: trabajadores[0], empresas, patrones});
+});
+
+router.post('/editar/:id',isLoggedIn, isEjecutivo, async(req,res) => {
+    const { id } = req.params;
+    const {empresa, nombre, apellidoPaterno, apellidoMaterno, estadoCivil, ciudad, direccion, calle, numeroInterior, numeroExterior, codigoPostal,
+        colonia, municipio, estado, puesto, horario, sueldoBase, banco, clabe, cuenta, infonavit, 
+        sueldoIMSS, rebajeInfonavit, fonacot, rebajeFonacot, NSS, CURP, RFC, patron, fechaIngreso, 
+        idEmpleado} = req.body;
+
     const iduser = await pool.query('SELECT usersId FROM empresa WHERE id = ?', [empresa]);
     const newLink = {
         empresaId: empresa,
         nombre,
-        patronId: patron,
+        apellidoPaterno,
+        apellidoMaterno,
+        estadoCivil,
+        NSS,
+        RFC,
+        CURP,
         ciudad,
         puesto,
         horario,
@@ -225,16 +324,27 @@ router.post('/alta', async(req,res) => {
         banco,
         clabe,
         cuenta,
+        infonavit,
+        rebajeInfonavit,
         sueldoIMSS,
-        direccion,
         usersId: iduser[0].usersId,
+        fonacot,
+        rebajeFonacot,
         estatus: 1,
-        fechaIngreso
+        direccion,
+        calle,
+        numeroInterior,
+        numeroExterior,
+        codigoPostal,
+        colonia,
+        municipio,
+        estado,
+        patronId: patron,
+        fechaIngreso,
+        idEmpleado
     };
-    await pool.query('INSERT INTO trabajador set ?', [newLink]);
+    await pool.query('UPDATE trabajador set ? WHERE id = ?', [newLink, id]);
     res.redirect('/ejecutivo');
 });
-
-
 
 module.exports = router;

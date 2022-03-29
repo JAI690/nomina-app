@@ -49,7 +49,17 @@ router.get('/profile', isLoggedIn, (req,res) => {
     
 });
 
+router.get('/password', (req,res)=>{
+    res.render('./auth/password.hbs');
+});
 
+router.post('/password', async(req,res,next)=>{
+    passport.authenticate('local.password', {
+        successRedirect: '/signin',
+        failureRedirect: '/password',
+        failureFlash: true
+    })(req,res,next);
+});
 
 router.get('/logout', (req,res) => {
     req.logOut();

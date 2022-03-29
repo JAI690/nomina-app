@@ -14,7 +14,7 @@
                             </a>
                         </div>
                     </div>
-                    
+                                        -->
                     <div class="col-md-12">
                         <div class="d-grid gap-2">
                             <a href="/ejecutivo/alta" class="btn btn-success m-4">
@@ -22,7 +22,7 @@
                             </a>
                         </div>
                     </div>
-                    -->
+
                     <form method="GET" action="/ejecutivo/nomina/">
                     <div class="col-md-12">
                       <label for="inputAddress" class="form-label">Empresa:</label>
@@ -63,6 +63,7 @@
             <th scope="col">Ciudad</th>
             <th scope="col">Nombre</th>
             <th scope="col">Puesto</th>
+            <th>Editar</th>
         </tr>
     </thead>
     <tbody>
@@ -87,6 +88,7 @@
                     <input type="text" style="border: hidden;" style="background-color:transparent;" value="{{nombre}}" name="nombre" readonly>
                 </td>
                 <td scope="row">{{puesto}}</td>
+                <th><a href="/ejecutivo/editar/{{id}}">Editar</a></th>
                 
 
             </tr>
@@ -116,7 +118,7 @@
     const empresa = document.getElementById("empresa");
     for(i=0; i<empresas.length;i++){
         let opcion = document.createElement('option');
-        opcion.setAttribute("value", empresas[i]);
+        opcion.setAttribute("value", empresasID[i]);
         let texto = document.createTextNode(empresas[i]);
         opcion.appendChild(texto);
         empresa.appendChild(opcion);
@@ -126,7 +128,7 @@
   function(){
     var input, filter, table, tr, td, i, txtValue;
     input = document.getElementById("empresa");
-    filter = input.value.toUpperCase();
+    filter = input.value
     table = document.getElementById("myTable");
     tr = table.getElementsByTagName("tr");
 
@@ -136,13 +138,12 @@
     //input.value
     // Loop through all table rows, and hide those who don't match the search query
     for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[4];
+      td = tr[i].getElementsByTagName("td")[0];
       
       if (td) {
         txtValue = td.textContent || td.innerText;
 
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            
+        if (Number(txtValue) === Number(filter)) {
           tr[i].style.display = "";
         } else {
           tr[i].style.display = "none";

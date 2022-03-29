@@ -12,6 +12,8 @@
                       
                     </div>
 
+
+
                     <div class="col-md-6">
                       <label for="inputAddress"class="form-label" >Del:</label>
                       <div class="input-group">
@@ -39,7 +41,7 @@
 
 <div class="container p-3">
     <form action="/ejecutivo" class="row g-3" method="POST">
-    <input name="nombreEmpresa" value="{{trabajadores.[0].nombreEmpresa}}" hidden>
+    <input name="nombreEmpresa" value="{{empresas.[0].id}}" hidden>
     <div class="table-responsive">
     <table class="table table-hover " width="500px"id="myTable">
     <thead class="thead-dark">
@@ -51,11 +53,6 @@
             <th scope="col">Faltas</th>
             <th scope="col">Compensaciones</th>
             <th scope="col">Rebajes</th>
-            <th scope="col">ISR</th>
-            <th scope="col">Subsidio</th>
-            <th scope="col">Aportacion IMSS</th>
-            <th scope="col">Fonacot</th>
-            <th scope="col">Infonavit</th>
         </tr>
     </thead>
     <tbody>
@@ -90,19 +87,10 @@
                     <input type="number" name="rebajes" step='0.01' >
                 </td>
                 <td>
-                    <input type="number" name="ISR" step='0.01' >
+                    <input type="number" value="{{rebajeFonacot}}" placeholder="{{rebajeFonacot}}" name="fonacot" step='0.01' hidden>
                 </td>
                 <td>
-                    <input type="number" name="subsidio" step='0.01' >
-                </td>
-                <td>
-                    <input type="number" name="IMSSaportacion" step='0.01' >
-                </td>
-                <td>
-                    <input type="number" value="{{rebajeFonacot}}" placeholder="{{rebajeFonacot}}" name="fonacot" step='0.01' required>
-                </td>
-                <td>
-                    <input type="number" value="{{rebajeInfonavit}}" placeholder="{{rebajeInfonavit}}"name="infonavit" step='0.01' required>
+                    <input type="number" value="{{rebajeInfonavit}}" placeholder="{{rebajeInfonavit}}"name="infonavit" step='0.01' hidden>
                 </td>
 
             </tr>
@@ -173,7 +161,7 @@
 
 
     const esquema = document.getElementById("esquema");
-    esquema.setAttribute("value",esquemas["{{empresas.[0].nombreEmpresa}}"]);
+    esquema.setAttribute("value",esquemas[0]);
 
     const inputfechainicio = document.getElementById("inputFechaInicio");
     const inputfechafin = document.getElementById("inputFechaFin");

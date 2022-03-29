@@ -1,3 +1,8 @@
+<!-- Descargar Excel de reporte -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js" integrity="sha512-ZfFfcp0ll1jVjeG5e7uPH1hwUyeoBUVAb3xRJpqBsH90jVegaYKv5nGOhGnUYxZg/kbYpl6EWVGvmWrbV32L9Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<!--
 <div class="container p-4">
     <div class ="row">
         <div class="col-md-5 mx-auto">
@@ -20,23 +25,27 @@
     </div>
 </div>
 
+-->
 
 <div class="container p-4">
     <form action="/nomina/pagar" method="POST">
     <table class="table table-hover" id="myTable">
     <thead>
         <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Empresa</th>
-        <th></th>
+        <th scope="col">Ejecutivo</th>
+        <th scope="col">Cliente</th>
+        <th scope="col">Semana</th>
+         <th scope="col">Creada</th>
         </tr>
     </thead>
     <tbody>
         {{#each nominas}}
             <tr>
-            <td scope="row">{{idnominas}}</td>
-            <td>{{empresaNombre}}</td>
-            <td><a href="/nomina/nomina/{{idnominas}}">Pagar</a></td>
+            <td>{{nombre}}</td>
+                        <td>{{nombreEmpresa}}</td>
+            <td scope="row">{{semananomina}}</td>
+            <td>{{dateFormat createdAt}}</td>
+            <!-- <td><a href="/nomina/nomina/{{idnominas}}">Pagar</a></td> -->
             </tr>
         {{/each}}
     </tbody>
@@ -45,6 +54,12 @@
                         
     </form>
 </div>
+
+
+<div id="container p-4" style="margin-left: 45%;">
+        <button class="btn btn-success mb-3" id="download">Exportar Excel</button>
+</div>
+
 
 
 <script>
@@ -107,7 +122,7 @@
         console.log(empresas.value)
         // Loop through all table rows, and hide those who don't match the search query
         for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[1];
+        td = tr[i].getElementsByTagName("td")[2];
         if (td) {
             txtValue = td.textContent || td.innerText;
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -232,6 +247,67 @@ function sortTable(n,type) {
 
 }
 
+
+
+</script>
+
+<!-- CREAR EXCEL -->
+<script>
+
+  /* Getting data */
+  let data = [];
+  let dataObj = {}
+
+  {{#each operaciones}}
+      dataObj = {}
+      dataObj['Apellido Paterno'] = "{{apellidoPaterno}}"
+      dataObj['Apellido Materno'] = "{{apellidoMaterno}}"
+      dataObj['Nombre'] = "{{nombre}}"
+      dataObj['Marca'] = "{{nombreEmpresa}}"
+      dataObj['Banco'] = "{{banco}}"
+      dataObj['Cuenta'] = "{{cuenta}}"
+      dataObj['Clabe'] = "{{clabe}}"
+      dataObj['Pago IMSS'] = "{{IMSSpago}}"
+
+
+      data.push(dataObj);
+  {{/each}}
+
+  let dataSindicato = []
+
+  {{#each operaciones}}
+      dataObj = {}
+      dataObj['Apellido Paterno'] = "{{apellidoPaterno}}"
+      dataObj['Apellido Materno'] = "{{apellidoMaterno}}"
+      dataObj['Nombre'] = "{{nombre}}"
+      dataObj['Marca'] = "{{nombreEmpresa}}"
+      dataObj['Registro Patronal'] = "{{registroPatronal}}"
+      dataObj['Patron'] = "{{patron}}"
+      dataObj['Banco'] = "{{banco}}"
+      dataObj['Cuenta'] = "{{cuenta}}"
+      dataObj['Clabe'] = "{{clabe}}"
+      dataObj['Pago'] = "{{sueldoNeto}}"
+
+
+      dataSindicato.push(dataObj);
+  {{/each}}
+
+  /* make the worksheet */
+  const ws = XLSX.utils.json_to_sheet(data);
+  const ws2 = XLSX.utils.json_to_sheet(dataSindicato);
+
+  /* add to workbook */
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "IMSS");
+  XLSX.utils.book_append_sheet(wb, ws2, "Sindicato");
+
+  /* generate an XLSX file */
+  const downloadButton = document.getElementById('download');
+  downloadButton.addEventListener('click', ()=>{
+    const fecha = new Date();
+    const hoy = fecha.toDateString();
+    XLSX.writeFile(wb, hoy+'.xlsx');
+  })
 
 
 </script>

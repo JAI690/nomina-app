@@ -1,0 +1,121 @@
+<!-- Descargar Excel de reporte -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js" integrity="sha512-ZfFfcp0ll1jVjeG5e7uPH1hwUyeoBUVAb3xRJpqBsH90jVegaYKv5nGOhGnUYxZg/kbYpl6EWVGvmWrbV32L9Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<!--
+<div class="container p-4">
+    <div class ="row">
+        <div class="col-md-5 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form class="row gx-3 gy-2 align-items-center">
+                    <div class="col-md-12">
+                      <label for="inputAddress" class="form-label">Empresa:</label>
+                      <div class="input-group">
+                            <select class="form-select" id="empresa">
+                            <option selected>Seleccionar...</option>
+                            </select>
+                      </div>
+                      
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+-->
+
+<div class="container p-4">
+    <form action="/nomina/pagar" method="POST">
+    <table class="table table-hover" id="myTable">
+    <thead>
+        <tr>
+        <th scope="col">Ejecutivo</th>
+        <th scope="col">Cliente</th>
+        <th scope="col">Semana</th>
+         <th scope="col">Creada</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each nominas}}
+            <tr>
+            <td>{{nombre}}</td>
+                        <td>{{nombreEmpresa}}</td>
+            <td scope="row">{{semananomina}}</td>
+            <td>{{dateFormat createdAt}}</td>
+            <!-- <td><a href="/nomina/nomina/{{idnominas}}">Pagar</a></td> -->
+            </tr>
+        {{/each}}
+    </tbody>
+    </table>
+    <input value="" name="fecha" id="fecha" hidden>
+                        
+    </form>
+</div>
+
+
+<div id="container p-4" style="margin-left: 45%;">
+        <button class="btn btn-success mb-3" id="download">Exportar Excel</button>
+</div>
+
+
+ 
+
+<!-- CREAR EXCEL -->
+<script>
+
+  /* Getting data */
+  let data = [];
+  let dataObj = {}
+
+  /* 
+  	*ID del empleado
+    *Conceptos compensaciones y rebajes
+    *Nombre empleado empezando por apellidos
+    *Cliente
+    *Registro Patronal
+    *Faltas
+    *Sueldo Final
+    *Sueldo IMSS
+  */
+
+  {{#each operaciones}}
+      dataObj = {}
+      dataObj['ID'] = "{{idEmpleado}}"
+      dataObj['Apellido Paterno'] = "{{apellidoPaterno}}"
+      dataObj['Apellido Materno'] = "{{apellidoMaterno}}"
+      dataObj['Nombre'] = "{{nombre}}"
+      dataObj['Marca'] = "{{nombreEmpresa}}"
+      dataObj['Registro Patronal'] = "{{registroPatronal}}"
+      dataObj['Patron'] = "{{patron}}"
+      dataObj['Asistencia'] = "{{dias}}"
+      dataObj['Complementos'] = "{{complementos}}"
+      dataObj['Rebajes'] = "{{rebajes}}"
+      dataObj['Pago IMSS'] = "{{IMSSpago}}"
+      dataObj['Sueldo Neto'] = "{{sueldoNeto}}"
+      dataObj['Semana'] = "{{semananomina}}"
+
+
+      data.push(dataObj);
+  {{/each}}
+
+  /* make the worksheet */
+  const ws = XLSX.utils.json_to_sheet(data);
+
+  /* add to workbook */
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Nomina");
+
+  /* generate an XLSX file */
+  const downloadButton = document.getElementById('download');
+  downloadButton.addEventListener('click', ()=>{
+    const fecha = new Date();
+    const hoy = fecha.toDateString();
+    XLSX.writeFile(wb, hoy+'.xlsx');
+  })
+
+
+</script>
+

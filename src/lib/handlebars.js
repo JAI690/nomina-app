@@ -13,7 +13,7 @@ hb.registerHelper('status', function (value) {
   });
   
 hb.registerHelper('dateFormat', function (date, options) {
-      const formatToUse = (arguments[1] && arguments[1].hash && arguments[1].hash.format) || "DD/MM/YYYY"
+      const formatToUse = (arguments[1] && arguments[1].hash && arguments[1].hash.format) || "DD/MM/YYYY HH:MM"
       return moment(date).format(formatToUse);
   });
 

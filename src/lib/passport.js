@@ -57,6 +57,21 @@ passport.use('local.signin', new LocalStrategy({
     }
 }));
 
+passport.use('local.password', new LocalStrategy({
+    userNameField: 'username',
+    passwordField: 'password',
+    passReqToCallback: true
+}, async(req,username,password,done) =>{
+    const rows = await pool.query('SELECT * FROM users WHERE user = ?', [username]);
+    if(rows.length > 0 ){
+        const newpassword = await helpers.encryptPassword(password);
+        await pool.query('UPDATE users SET password = ? WHERE user = ?', [newpassword, username])
+        done(null,false, req.flash('success', 'Cambio hecho '));
+    } else{
+        return done(null, false, req.flash('message', 'Usuario no existe'));
+    }
+}));
+
 passport.serializeUser((user,done)=>{
     done(null, user.id)
 });
