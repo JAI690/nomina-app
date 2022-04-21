@@ -31,6 +31,22 @@ router.get('/',isLoggedIn, isEjecutivo, async(req,res) => {
     res.render("../views/ejecutivo/index.hbs", {trabajadores, empresas: empresas});
 });
 
+router.get('/nominas',isLoggedIn, isEjecutivo, async(req,res) => {
+    const id = req.user.id
+    const nominas = await pool.query('SELECT nominas.*, empresa.*, users.nombre FROM nominas LEFT JOIN empresa ON nominas.empresaNombre=empresa.id LEFT JOIN users ON empresa.usersId=users.id WHERE users.id = ?', id);
+    console.log(nominas)
+    res.render("../views/ejecutivo/verNominas.hbs", {nominas})
+});
+
+router.get('/detalleNomina/:id',isLoggedIn, isEjecutivo, async(req,res) => {
+    const { id } = req.params
+    const operaciones = await pool.query('SELECT * FROM operacion LEFT JOIN trabajador ON operacion.trabajadorId=trabajador.id JOIN empresa ON trabajador.empresaId = empresa.id WHERE pagado = 0 AND nominaId = ?', [id]);
+    const nomina = await pool.query('SELECT * FROM nominas WHERE idnominas = ?', [id])
+    console.log(nomina)
+    res.render("../views/ejecutivo/detalleNominas.hbs", {operaciones,nomina})
+});
+
+
 router.get('/heb',isLoggedIn, isEjecutivo, async(req,res) => {
     const id = req.user.id
     const empresas = await pool.query('SELECT * FROM empresa ', [id]);

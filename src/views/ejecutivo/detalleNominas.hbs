@@ -1,0 +1,66 @@
+<div class="container p-4">
+    <div class ="row">
+        <div class="col-md-5 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form class="row gx-3 gy-2 align-items-center">
+                    <div class="col-md-12" style="text-align: center;">
+                      <h3>Nomina de {{nomina.[0].empresaNombre}}</h3>
+                      
+                    </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container p-4">
+    <form action="/nomina/pagar" method="POST">
+    <table class="table table-hover" id="myTable">
+    <thead>
+        <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Empresa</th>
+        <th scope="col">Nombres</th>
+        <th scope="col" onclick="sortTable(3, 'str')">Banco &gt</th>
+        <th scope="col">Cuenta</th>
+        <th scope="col">Clabe Interbancaria</th>
+        <th scope="col">Salario Diario</th>
+        <th scope="col">Total a pagar</th>
+        <th scope="col">Periodo inicial</th>
+        <th scope="col">Periodo final</th>
+        <th scope="col">Pagado</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each operaciones}}
+            <tr>
+            <td scope="row">{{trabajadorId}}</td>
+            <td>{{nombreEmpresa}}</td>
+            <td>{{nombre}}</td>
+            <td><p class="m-2">{{banco}}</p></td>
+            <td><p>{{cuenta}}</p></td>
+            <td><p class="m-2">{{clabe}}</p></td>
+            <td><p>{{accountingFormat IMSSpago}}</p></td>
+            <td><p>{{accountingFormat sueldoNeto}}</p></td>
+            <td><p>{{dateFormat fechaInicio}}</p></td>
+            <td><p>{{dateFormat fechaFin}}</p></td>
+            <td><input type="checkbox" name="estatusPago" value="{{operacionId}}"></td>
+            </tr>
+        {{/each}}
+    </tbody>
+    </table>
+    <input value="" name="fecha" id="fecha" hidden>
+                        <div class="col-12">
+                        <div class="d-grid gap-2">
+                                <button class="btn btn-primary">
+                                    Pagar
+                                </button>
+                        </div>
+                    </div>
+    </form>
+</div>
+
