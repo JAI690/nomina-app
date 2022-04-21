@@ -28,6 +28,11 @@
                                 Ver nominas
                             </a>
                         </div>
+                        <div class="d-grid gap-2">
+                            <a href="/ejecutivo/inactivos" class="btn btn-success m-4">
+                                Inactivos
+                            </a>
+                        </div>
                     </div>
 
                     <form method="GET" action="/ejecutivo/nomina/">
@@ -71,6 +76,8 @@
             <th scope="col">Nombre</th>
             <th scope="col">Puesto</th>
             <th>Editar</th>
+                        <th>Baja</th>
+
         </tr>
     </thead>
     <tbody>
@@ -96,8 +103,7 @@
                 </td>
                 <td scope="row">{{puesto}}</td>
                 <th><a href="/ejecutivo/editar/{{id}}">Editar</a></th>
-                
-
+                <th><a href="/ejecutivo/inactivo/{{id}}">Baja</a></th>
             </tr>
         {{/each}}
 
@@ -106,6 +112,49 @@
     </div>
 </div>
 
+<div class="container p-3">
+    <div class="table-responsive">
+    <table class="table table-hover " width="500px"id="myTable">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Empresa</th>
+            <th scope="col">Ciudad</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Puesto</th>
+            <th>Editar</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {{#each inactivos}}
+            <tr>
+                <td scope="row" hidden>
+                    {{empresaId}}
+                </td>
+                <td scope="row" hidden>
+                    <input type="number" value="{{sueldoIMSS}}" name="IMSS"  readonly>
+                </td>
+                 <td scope="row" hidden>
+                    <input type="number" value="{{id}}" name="id" readonly>
+                </td>
+                <td scope="row" hidden>
+                    <input type="number" value="{{sueldoBase}}" name="sueldoBase" readonly>
+                </td>
+                <td scope="row">{{nombreEmpresa}}</td>
+                <td scope="row">{{ciudad}}</td>
+                <td scope="row">
+                    <input type="text" style="border: hidden;" style="background-color:transparent;" value="{{nombre}}" name="nombre" readonly>
+                </td>
+                <td scope="row">{{puesto}}</td>
+                <th><a href="/ejecutivo/editar/{{id}}">Editar</a></th>
+                <th><a href="/ejecutivo/activo/{{id}}">Alta</a></th>
+            </tr>
+        {{/each}}
+
+    </tbody>
+    </table>
+</div>
+</div>
 
 <script>
 

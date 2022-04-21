@@ -17,18 +17,38 @@ router.get('/',isLoggedIn, isEjecutivo, async(req,res) => {
     const id = req.user.id
     let empresas = {}
     let trabajadores = {}
+    let inactivos = {}
     if(req.user.rol === 'admin'){
         trabajadores = await pool.query('SELECT trabajador.id, trabajador.nombre,trabajador.ciudad, trabajador.puesto, empresa.nombreEmpresa, empresa.id as empresaId FROM trabajador LEFT JOIN empresa ON trabajador.empresaId = empresa.id WHERE estatus = 1');
+        inactivos = await pool.query('SELECT trabajador.id, trabajador.nombre,trabajador.ciudad, trabajador.puesto, empresa.nombreEmpresa, empresa.id as empresaId FROM trabajador LEFT JOIN empresa ON trabajador.empresaId = empresa.id WHERE estatus = 0');
         empresas = await pool.query('SELECT * FROM empresa ');
     }else{
         trabajadores = await pool.query('SELECT trabajador.id, trabajador.nombre,trabajador.ciudad, trabajador.puesto, empresa.nombreEmpresa, empresa.id as empresaId FROM trabajador LEFT JOIN empresa ON trabajador.empresaId = empresa.id WHERE empresa.usersId = ? AND estatus = 1',[id]);
+        inactivos = await pool.query('SELECT trabajador.id, trabajador.nombre,trabajador.ciudad, trabajador.puesto, empresa.nombreEmpresa, empresa.id as empresaId FROM trabajador LEFT JOIN empresa ON trabajador.empresaId = empresa.id WHERE empresa.usersId = ? AND estatus = 0',[id]);
         empresas = await pool.query('SELECT * FROM empresa WHERE usersId = ?', [id]);
     }
     if(empresas.nombreEmpresa == 'HEB'){
         res.render("../views/ejecutivo/heb.hbs", {trabajadores, empresas: empresas});
     };
     console.log(trabajadores)
-    res.render("../views/ejecutivo/index.hbs", {trabajadores, empresas: empresas});
+    res.render("../views/ejecutivo/index.hbs", {trabajadores, inactivos, empresas: empresas});
+});
+
+router.get('/inactivos',isLoggedIn, isEjecutivo, async(req,res) => {
+    const id = req.user.id
+    let empresas = {}
+    let inactivos = {}
+    if(req.user.rol === 'admin'){
+        inactivos = await pool.query('SELECT trabajador.id, trabajador.nombre,trabajador.ciudad, trabajador.puesto, empresa.nombreEmpresa, empresa.id as empresaId FROM trabajador LEFT JOIN empresa ON trabajador.empresaId = empresa.id WHERE estatus = 0');
+        empresas = await pool.query('SELECT * FROM empresa ');
+    }else{
+        inactivos = await pool.query('SELECT trabajador.id, trabajador.nombre,trabajador.ciudad, trabajador.puesto, empresa.nombreEmpresa, empresa.id as empresaId FROM trabajador LEFT JOIN empresa ON trabajador.empresaId = empresa.id WHERE empresa.usersId = ? AND estatus = 0',[id]);
+        empresas = await pool.query('SELECT * FROM empresa WHERE usersId = ?', [id]);
+    }
+    if(empresas.nombreEmpresa == 'HEB'){
+        res.render("../views/ejecutivo/heb.hbs", {inactivos, empresas: empresas});
+    };
+    res.render("../views/ejecutivo/inactivos.hbs", {inactivos, empresas: empresas});
 });
 
 router.get('/nominas',isLoggedIn, isEjecutivo, async(req,res) => {
@@ -314,6 +334,18 @@ router.get('/editar/:id', isLoggedIn, isEjecutivo, async(req,res) => {
     console.log(id)
     res.render("../views/ejecutivo/editar.hbs", {trabajador: trabajadores[0], empresas, patrones});
 });
+
+router.post('/inactivo/:id', isLoggedIn, isEjecutivo, async(req,res) => {
+    const { id } = req.params;
+    await pool.query('UPDATE trabajador set estatus = 0 WHERE id = ?', id);
+    res.redirect('/ejecutivo/');
+})
+
+router.post('/activo/:id', isLoggedIn, isEjecutivo, async(req,res) => {
+    const { id } = req.params;
+    await pool.query('UPDATE trabajador set estatus = 1 WHERE id = ?', id);
+    res.redirect('/ejecutivo/');
+})
 
 router.post('/editar/:id',isLoggedIn, isEjecutivo, async(req,res) => {
     const { id } = req.params;
