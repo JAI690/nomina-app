@@ -29,7 +29,7 @@ const getWeek = function (date) {
 const ISRTarifas = {
     'Semana':[
         {
-            inf: 0.01,
+            inf: 0,
             sup: 148.4,
             cuota: 0,
             porcentaje: 1.92
@@ -97,7 +97,7 @@ const ISRTarifas = {
     ],
     'Quincena':[
         {
-            inf: 0.01,
+            inf: 0,
             sup: 318,
             cuota: 0,
             porcentaje: 1.92
@@ -166,8 +166,9 @@ const ISRTarifas = {
 }
 
 const calcularISR = function(sueldo,cotizador){
-    
-    const tarifa = ISRTarifas[cotizador].find((segmento) => sueldo>segmento.inf && sueldo<segmento.sup);
+    if(sueldo<0)sueldo=0;
+    const tarifa = ISRTarifas[cotizador].find((segmento) => sueldo>=segmento.inf && sueldo<segmento.sup);
+
     const gravable = sueldo-tarifa.inf;
     const isr = Number.parseFloat(tarifa.cuota + (gravable*tarifa.porcentaje/100)).toFixed(2)
 

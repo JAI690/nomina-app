@@ -33,7 +33,6 @@ router.get('/nomina/:id', isLoggedIn,isNomina, async(req,res) => {
     const { id } = req.params
     const operaciones = await pool.query('SELECT * FROM operacion LEFT JOIN trabajador ON operacion.trabajadorId=trabajador.id JOIN empresa ON trabajador.empresaId = empresa.id WHERE pagado = 0 AND nominaId = ?', [id]);
     const nomina = await pool.query('SELECT * FROM nominas WHERE idnominas = ?', [id])
-    console.log(nomina)
     res.render("../views/nomina/index.hbs", {operaciones,nomina});
 });
 
